@@ -3,6 +3,8 @@ import {authSlice} from './slices/authSlice';
 import {farmSlice} from './slices/farmSlice';
 import {financialSlice} from './slices/financialSlice';
 import {uiSlice} from './slices/uiSlice';
+import {syncSlice} from './slices/syncSlice';
+import errorReducer from './slices/errorSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ export const store = configureStore({
     farm: farmSlice.reducer,
     financial: financialSlice.reducer,
     ui: uiSlice.reducer,
+    sync: syncSlice.reducer,
+    error: errorReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

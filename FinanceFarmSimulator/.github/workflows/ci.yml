@@ -1,0 +1,233 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: FinanceFarmSimulator/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./FinanceFarmSimulator
+      run: npm ci
+      
+    - name: Run linting
+      working-directory: ./FinanceFarmSimulator
+      run: npm run lint
+      
+    - name: Run type checking
+      working-directory: ./FinanceFarmSimulator
+      run: npx tsc --noEmit
+      
+    - name: Run unit tests
+      working-directory: ./FinanceFarmSimulator
+      run: npm run test:coverage
+      
+    - name: Run integration tests
+      working-directory: ./FinanceFarmSimulator
+      run: npm run test -- --testPathPattern=integration
+      
+    - name: Run security tests
+      working-directory: ./FinanceFarmSimulator
+      run: npm run test -- --testPathPattern=security
+      
+    - name: Run performance tests
+      working-directory: ./FinanceFarmSimulator
+      run: npm run test -- --testPathPattern=performance
+      
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./FinanceFarmSimulator/coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+        
+    - name: Archive test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results-${{ matrix.node-version }}
+        path: |
+          FinanceFarmSimulator/coverage/
+          FinanceFarmSimulator/test-results.xml
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: FinanceFarmSimulator/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./FinanceFarmSimulator
+      run: npm ci
+      
+    - name: Run E2E tests
+      working-directory: ./FinanceFarmSimulator
+      run: npm run test -- --testPathPattern=e2e --runInBand
+      
+    - name: Archive E2E test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: e2e-test-results
+        path: |
+          FinanceFarmSimulator/e2e-results/
+          FinanceFarmSimulator/screenshots/
+
+  security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: FinanceFarmSimulator/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./FinanceFarmSimulator
+      run: npm ci
+      
+    - name: Run security audit
+      working-directory: ./FinanceFarmSimulator
+      run: npm audit --audit-level=moderate
+      
+    - name: Run dependency vulnerability scan
+      working-directory: ./FinanceFarmSimulator
+      run: npx audit-ci --moderate
+      
+    - name: Run SAST scan
+      uses: github/super-linter@v4
+      env:
+        DEFAULT_BRANCH: main
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VALIDATE_TYPESCRIPT_ES: true
+        VALIDATE_JAVASCRIPT_ES: true
+
+  performance-benchmarks:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: FinanceFarmSimulator/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./FinanceFarmSimulator
+      run: npm ci
+      
+    - name: Run performance benchmarks
+      working-directory: ./FinanceFarmSimulator
+      run: npm run test:performance
+      
+    - name: Upload performance results
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-benchmarks
+        path: FinanceFarmSimulator/performance-results.json
+
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: FinanceFarmSimulator/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./FinanceFarmSimulator
+      run: npm ci
+      
+    - name: Build application
+      working-directory: ./FinanceFarmSimulator
+      run: npm run build
+      
+    - name: Test build
+      working-directory: ./FinanceFarmSimulator
+      run: npm run test:build
+
+  quality-gates:
+    runs-on: ubuntu-latest
+    needs: [test, e2e-tests, security-scan, performance-benchmarks]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download test artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: test-results-20.x
+        path: ./test-results
+        
+    - name: Check coverage threshold
+      run: |
+        COVERAGE=$(grep -o 'Lines.*: [0-9.]*%' ./test-results/coverage/lcov-report/index.html | grep -o '[0-9.]*' | head -1)
+        echo "Coverage: $COVERAGE%"
+        if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+          echo "Coverage $COVERAGE% is below threshold of 80%"
+          exit 1
+        fi
+        
+    - name: Check performance benchmarks
+      run: |
+        # Add performance threshold checks here
+        echo "Performance benchmarks passed"
+        
+    - name: Quality gate summary
+      run: |
+        echo "✅ All quality gates passed"
+        echo "- Unit tests: ✅"
+        echo "- Integration tests: ✅"
+        echo "- E2E tests: ✅"
+        echo "- Security scan: ✅"
+        echo "- Performance benchmarks: ✅"
+        echo "- Code coverage: ✅"

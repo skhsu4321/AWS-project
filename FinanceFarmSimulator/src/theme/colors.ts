@@ -21,6 +21,28 @@ export const colors = {
     info: '#2196F3',
   },
   
+  // Adult Mode High Contrast Colors
+  adultHighContrast: {
+    primary: '#000000',
+    primaryLight: '#333333',
+    primaryDark: '#000000',
+    secondary: '#FFFF00',
+    secondaryLight: '#FFFF66',
+    secondaryDark: '#CCCC00',
+    background: '#FFFFFF',
+    surface: '#FFFFFF',
+    surfaceVariant: '#F0F0F0',
+    onPrimary: '#FFFFFF',
+    onSecondary: '#000000',
+    onBackground: '#000000',
+    onSurface: '#000000',
+    outline: '#000000',
+    success: '#008000',
+    warning: '#FF8000',
+    error: '#FF0000',
+    info: '#0000FF',
+  },
+  
   // Child Mode Colors - Bright and playful
   child: {
     primary: '#4CAF50', // Bright green
@@ -43,6 +65,28 @@ export const colors = {
     info: '#42A5F5',
   },
   
+  // Child Mode High Contrast Colors
+  childHighContrast: {
+    primary: '#000000',
+    primaryLight: '#333333',
+    primaryDark: '#000000',
+    secondary: '#FFFF00',
+    secondaryLight: '#FFFF66',
+    secondaryDark: '#CCCC00',
+    background: '#FFFFFF',
+    surface: '#FFFFFF',
+    surfaceVariant: '#F0F0F0',
+    onPrimary: '#FFFFFF',
+    onSecondary: '#000000',
+    onBackground: '#000000',
+    onSurface: '#000000',
+    outline: '#000000',
+    success: '#008000',
+    warning: '#FF8000',
+    error: '#FF0000',
+    info: '#0000FF',
+  },
+  
   // Common colors used in both modes
   common: {
     white: '#FFFFFF',
@@ -53,7 +97,7 @@ export const colors = {
   },
 };
 
-export type ColorScheme = 'adult' | 'child';
+export type ColorScheme = 'adult' | 'child' | 'adultHighContrast' | 'childHighContrast';
 export type ThemeColors = typeof colors.adult & {
   common: typeof colors.common;
 };

@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {useTheme} from '../../contexts/ThemeContext';
+import { useAccessibility } from '../../hooks/useAccessibility';
 
 export interface ButtonProps {
   title: string;
@@ -19,6 +20,10 @@ export interface ButtonProps {
   style?: ViewStyle;
   textStyle?: TextStyle;
   testID?: string;
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
+  hapticFeedback?: 'light' | 'medium' | 'heavy' | 'success' | 'warning' | 'error';
+  announceOnPress?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -31,8 +36,13 @@ export const Button: React.FC<ButtonProps> = ({
   style,
   textStyle,
   testID,
+  accessibilityLabel,
+  accessibilityHint,
+  hapticFeedback = 'light',
+  announceOnPress,
 }) => {
   const {theme} = useTheme();
+  const { triggerHapticFeedback, announceForAccessibility } = useAccessibility();
 
   const buttonStyles = StyleSheet.create({
     container: {
@@ -110,15 +120,31 @@ export const Button: React.FC<ButtonProps> = ({
     }
   };
 
+  const handlePress = async () => {
+    if (disabled || loading) return;
+    
+    // Trigger haptic feedback
+    await triggerHapticFeedback(hapticFeedback);
+    
+    // Announce for accessibility if specified
+    if (announceOnPress) {
+      announceForAccessibility(announceOnPress);
+    }
+    
+    onPress();
+  };
+
   return (
     <TouchableOpacity
       style={[getButtonStyle(), style]}
-      onPress={onPress}
+      onPress={handlePress}
       disabled={disabled || loading}
       testID={testID}
       accessibilityRole="button"
-      accessibilityLabel={title}
+      accessibilityLabel={accessibilityLabel || title}
+      accessibilityHint={accessibilityHint}
       accessibilityState={{disabled: disabled || loading}}
+      accessible={true}
     >
       {loading ? (
         <ActivityIndicator
