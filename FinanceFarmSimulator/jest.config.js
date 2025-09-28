@@ -12,4 +12,12 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(expo-crypto|expo-sqlite|@expo|expo|uuid)/)',
+  ],
+  moduleNameMapper: {
+    '^expo-crypto$': '<rootDir>/src/__mocks__/expo-crypto.js',
+    '^expo-sqlite$': '<rootDir>/src/__mocks__/expo-sqlite.js',
+    '^uuid$': '<rootDir>/src/__mocks__/uuid.js',
+  },
 };
