@@ -1,51 +1,19 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {View} from 'react-native';
+import {TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '../contexts/ThemeContext';
-import {Screen, Typography} from '../components/common';
+import {Typography} from '../components/common';
+import {LoginScreen, RegisterScreen} from '../screens/auth';
 
 const Stack = createStackNavigator();
-
-// Placeholder components - will be implemented in later tasks
-const LoginScreen: React.FC = () => {
-  const {theme} = useTheme();
-  
-  return (
-    <Screen testID="login-screen">
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Typography variant="h2" color={theme.colors.primary}>
-          Login Screen
-        </Typography>
-        <Typography variant="body1" style={{marginTop: theme.spacing.md}}>
-          Authentication interface will be implemented in task 4
-        </Typography>
-      </View>
-    </Screen>
-  );
-};
-
-const RegisterScreen: React.FC = () => {
-  const {theme} = useTheme();
-  
-  return (
-    <Screen testID="register-screen">
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Typography variant="h2" color={theme.colors.primary}>
-          Register Screen
-        </Typography>
-        <Typography variant="body1" style={{marginTop: theme.spacing.md}}>
-          Registration interface will be implemented in task 4
-        </Typography>
-      </View>
-    </Screen>
-  );
-};
 
 export const AuthNavigator: React.FC = () => {
   const {theme} = useTheme();
   
   return (
     <Stack.Navigator
+      initialRouteName="Login"
       screenOptions={{
         headerStyle: {
           backgroundColor: theme.colors.surface,
@@ -62,12 +30,31 @@ export const AuthNavigator: React.FC = () => {
       <Stack.Screen 
         name="Login" 
         component={LoginScreen}
-        options={{title: 'Welcome Back'}}
+        options={({navigation}) => ({
+          title: 'Welcome Back',
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Register')}
+              style={{marginRight: theme.spacing.md}}
+            >
+              <Typography 
+                variant="button" 
+                color={theme.colors.primary}
+                style={{fontSize: 14}}
+              >
+                Sign Up
+              </Typography>
+            </TouchableOpacity>
+          ),
+        })}
       />
       <Stack.Screen 
         name="Register" 
         component={RegisterScreen}
-        options={{title: 'Create Account'}}
+        options={{
+          title: 'Create Account',
+          headerBackTitle: 'Login',
+        }}
       />
     </Stack.Navigator>
   );
