@@ -54,4 +54,6 @@ export const colors = {
 };
 
 export type ColorScheme = 'adult' | 'child';
-export type ThemeColors = typeof colors.adult;
+export type ThemeColors = typeof colors.adult & {
+  common: typeof colors.common;
+};

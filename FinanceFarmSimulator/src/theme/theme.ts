@@ -1,7 +1,7 @@
-import {colors, ColorScheme, ThemeColors} from './colors';
-import {typography, ThemeTypography} from './typography';
-import {spacing} from './spacing';
-import {dimensions} from './dimensions';
+import { colors, ColorScheme, ThemeColors } from './colors';
+import { typography, ThemeTypography } from './typography';
+import { spacing } from './spacing';
+import { dimensions } from './dimensions';
 
 export interface Theme {
   colors: ThemeColors;
@@ -12,10 +12,13 @@ export interface Theme {
 }
 
 export const createTheme = (mode: ColorScheme): Theme => ({
-  colors: colors[mode],
+  colors: {
+    ...colors[mode],
+    common: colors.common,
+  },
   typography: typography[mode],
-  spacing: mode === 'child' ? {...spacing, component: spacing.child} : spacing,
-  dimensions: mode === 'child' ? {...dimensions, component: dimensions.child} : dimensions,
+  spacing: mode === 'child' ? { ...spacing, component: spacing.child } : spacing,
+  dimensions: mode === 'child' ? { ...dimensions, component: dimensions.child } : dimensions,
   mode,
 });
 
@@ -23,4 +26,4 @@ export const createTheme = (mode: ColorScheme): Theme => ({
 export const adultTheme = createTheme('adult');
 export const childTheme = createTheme('child');
 
-export type {ColorScheme, ThemeColors, ThemeTypography};
+export type { ColorScheme, ThemeColors, ThemeTypography };
