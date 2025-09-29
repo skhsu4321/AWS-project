@@ -143,54 +143,70 @@ export const ChoreSchema = z.object({
 
 export type Chore = z.infer<typeof ChoreSchema>;
 
-// Input schemas for creating new records
-export const ParentChildLinkInputSchema = ParentChildLinkSchema.omit({
-  id: true,
-  createdAt: true,
+// Input schemas for creating new records - simplified to avoid omit() issues
+export const ParentChildLinkInputSchema = z.object({
+  parentId: z.string().uuid(),
+  childId: z.string().uuid(),
+  relationshipType: z.enum(['parent', 'guardian', 'family_member']).default('parent'),
+  permissions: z.array(z.string()).default([]),
 });
 
 export type ParentChildLinkInput = z.infer<typeof ParentChildLinkInputSchema>;
 
-export const ApprovalRequestInputSchema = ApprovalRequestSchema.omit({
-  id: true,
-  requestedAt: true,
-  status: true,
+export const ApprovalRequestInputSchema = z.object({
+  childId: z.string().uuid(),
+  parentId: z.string().uuid(),
+  requestType: z.enum(['expense', 'goal', 'purchase', 'allowance_increase']),
+  amount: z.number().positive().optional(),
+  description: z.string().min(1),
+  metadata: z.record(z.any()).optional(),
 });
 
 export type ApprovalRequestInput = z.infer<typeof ApprovalRequestInputSchema>;
 
-export const AllowanceConfigInputSchema = AllowanceConfigSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  lastPaidAt: true,
-  nextPaymentAt: true,
+export const AllowanceConfigInputSchema = z.object({
+  childId: z.string().uuid(),
+  parentId: z.string().uuid(),
+  amount: z.number().positive(),
+  frequency: z.enum(['weekly', 'biweekly', 'monthly']),
+  dayOfWeek: z.number().min(0).max(6).optional(),
+  dayOfMonth: z.number().min(1).max(31).optional(),
+  isActive: z.boolean().default(true),
 });
 
 export type AllowanceConfigInput = z.infer<typeof AllowanceConfigInputSchema>;
 
-export const ChildActivityInputSchema = ChildActivitySchema.omit({
-  id: true,
-  timestamp: true,
+export const ChildActivityInputSchema = z.object({
+  childId: z.string().uuid(),
+  activityType: z.enum(['login', 'expense_added', 'goal_created', 'income_added', 'chore_completed']),
+  description: z.string(),
+  metadata: z.record(z.any()).optional(),
 });
 
 export type ChildActivityInput = z.infer<typeof ChildActivityInputSchema>;
 
-export const RestrictionConfigInputSchema = RestrictionConfigSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
+export const RestrictionConfigInputSchema = z.object({
+  childId: z.string().uuid(),
+  parentId: z.string().uuid(),
+  maxDailySpending: z.number().min(0).optional(),
+  maxWeeklySpending: z.number().min(0).optional(),
+  maxMonthlySpending: z.number().min(0).optional(),
+  blockedCategories: z.array(z.string()).default([]),
+  requiresApproval: z.boolean().default(false),
+  approvalThreshold: z.number().min(0).optional(),
 });
 
 export type RestrictionConfigInput = z.infer<typeof RestrictionConfigInputSchema>;
 
-export const ChoreInputSchema = ChoreSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  isCompleted: true,
-  completedAt: true,
-  approvedAt: true,
+export const ChoreInputSchema = z.object({
+  childId: z.string().uuid(),
+  parentId: z.string().uuid(),
+  title: z.string().min(1),
+  description: z.string().optional(),
+  reward: z.number().positive(),
+  dueDate: z.date().optional(),
+  isRecurring: z.boolean().default(false),
+  recurringPeriod: z.enum(['daily', 'weekly', 'monthly']).optional(),
 });
 
 export type ChoreInput = z.infer<typeof ChoreInputSchema>;

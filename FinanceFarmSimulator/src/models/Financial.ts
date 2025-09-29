@@ -142,29 +142,43 @@ export const FinancialSummarySchema = z.object({
 export type FinancialSummary = z.infer<typeof FinancialSummarySchema>;
 
 // Input schemas for creating new records
-export const SavingsGoalInputSchema = SavingsGoalSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  currentAmount: true,
+export const SavingsGoalInputSchema = SavingsGoalSchema.pick({
+  userId: true,
+  title: true,
+  description: true,
+  targetAmount: true,
+  deadline: true,
+  category: true,
+  cropType: true,
+  status: true,
+  isRecurring: true,
+  recurringPeriod: true,
 });
 
 export type SavingsGoalInput = z.infer<typeof SavingsGoalInputSchema>;
 
-export const ExpenseInputSchema = ExpenseSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
+export const ExpenseInputSchema = ExpenseSchema.pick({
+  userId: true,
+  amount: true,
+  category: true,
+  description: true,
+  date: true,
+  receiptImage: true,
+  isRecurring: true,
+  recurringPeriod: true,
+  tags: true,
 });
 
 export type ExpenseInput = z.infer<typeof ExpenseInputSchema>;
 
-export const IncomeInputSchema = IncomeSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  multiplier: true,
-  streakCount: true,
+export const IncomeInputSchema = IncomeSchema.pick({
+  userId: true,
+  amount: true,
+  source: true,
+  description: true,
+  date: true,
+  isRecurring: true,
+  recurringPeriod: true,
 });
 
 export type IncomeInput = z.infer<typeof IncomeInputSchema>;

@@ -167,37 +167,33 @@ export const GameStatisticsSchema = z.object({
 
 export type GameStatistics = z.infer<typeof GameStatisticsSchema>;
 
-// Input schemas for creating new records
-export const CropInputSchema = CropSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  growthStage: true,
-  healthPoints: true,
-  growthProgress: true,
-  fertilizerBoost: true,
-  weedPenalty: true,
-  streakMultiplier: true,
+// Input schemas for creating new records - simplified to avoid omit() issues
+export const CropInputSchema = z.object({
+  goalId: z.string().uuid(),
+  userId: z.string().uuid(),
+  type: z.nativeEnum(CropType),
+  position: PositionSchema,
+  plantedAt: z.date(),
 });
 
 export type CropInput = z.infer<typeof CropInputSchema>;
 
-export const DecorationInputSchema = DecorationSchema.omit({
-  id: true,
-  createdAt: true,
-  isUnlocked: true,
-  purchasedAt: true,
+export const DecorationInputSchema = z.object({
+  userId: z.string().uuid(),
+  category: z.nativeEnum(DecorationCategory),
+  name: z.string().min(1),
+  description: z.string().optional(),
+  position: PositionSchema,
+  cost: z.number().min(0),
 });
 
 export type DecorationInput = z.infer<typeof DecorationInputSchema>;
 
-export const FarmInputSchema = FarmSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  crops: true,
-  decorations: true,
-  healthScore: true,
+export const FarmInputSchema = z.object({
+  userId: z.string().uuid(),
+  name: z.string().min(1),
+  level: z.number().min(1).default(1),
+  experience: z.number().min(0).default(0),
   level: true,
   experience: true,
   totalHarvests: true,
