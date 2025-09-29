@@ -8,7 +8,16 @@ import {
   ContributionGraph,
 } from 'react-native-chart-kit';
 import { TrendData, CategoryBreakdown, FinancialHealthScore } from '../../services/AnalyticsService';
-import { theme } from '../../theme';
+// Simple theme for chart components
+const theme = {
+  colors: {
+    primary: '#2E7D32',
+    secondary: '#FF8F00',
+    background: '#FFFFFF',
+    surface: '#F5F5F5',
+    text: '#1C1B1F',
+  },
+};
 
 const screenWidth = Dimensions.get('window').width;
 

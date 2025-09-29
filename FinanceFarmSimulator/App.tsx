@@ -513,7 +513,205 @@ export default function App() {
     Income: IncomeScreen,
     Expenses: ExpensesScreen,
     Goals: () => <Text>Goals Screen (Coming Soon)</Text>,
-    Analytics: () => <Text>Analytics Screen (Coming Soon)</Text>,
+    Analytics: () => {
+      const totalIncome = income.reduce((sum, item) => sum + item.amount, 0);
+      const totalExpenses = expenses.reduce((sum, item) => sum + item.amount, 0);
+      const balance = totalIncome - totalExpenses;
+      const savingsRate = totalIncome > 0 ? ((balance / totalIncome) * 100) : 0;
+      
+      // Calculate expense breakdown
+      const expensesByCategory = expenses.reduce((acc, expense) => {
+        acc[expense.category] = (acc[expense.category] || 0) + expense.amount;
+        return acc;
+      }, {});
+      
+      const categoryColors = {
+        food: '#FF6B6B',
+        entertainment: '#4ECDC4', 
+        transport: '#45B7D1',
+        shopping: '#96CEB4',
+        other: '#FFEAA7'
+      };
+      
+      return (
+        <ScrollView style={styles.screenContainer}>
+          <View style={styles.contentContainer}>
+            <Text style={styles.screenTitle}>📈 Analytics</Text>
+            
+            {/* Quick Stats */}
+            <View style={styles.analyticsStatsContainer}>
+              <View style={styles.analyticsStatCard}>
+                <Text style={styles.analyticsStatValue}>${totalIncome.toFixed(2)}</Text>
+                <Text style={styles.analyticsStatLabel}>Total Income</Text>
+              </View>
+              <View style={styles.analyticsStatCard}>
+                <Text style={[styles.analyticsStatValue, styles.expenseAmount]}>
+                  ${totalExpenses.toFixed(2)}
+                </Text>
+                <Text style={styles.analyticsStatLabel}>Total Expenses</Text>
+              </View>
+              <View style={styles.analyticsStatCard}>
+                <Text style={[styles.analyticsStatValue, balance >= 0 ? styles.positive : styles.negative]}>
+                  ${balance.toFixed(2)}
+                </Text>
+                <Text style={styles.analyticsStatLabel}>Net Balance</Text>
+              </View>
+            </View>
+            
+            {/* Savings Rate */}
+            <View style={styles.analyticsCard}>
+              <Text style={styles.analyticsCardTitle}>💰 Savings Rate</Text>
+              <View style={styles.savingsRateContainer}>
+                <Text style={[styles.savingsRateValue, savingsRate >= 20 ? styles.positive : savingsRate >= 10 ? styles.warning : styles.negative]}>
+                  {savingsRate.toFixed(1)}%
+                </Text>
+                <Text style={styles.savingsRateDescription}>
+                  {savingsRate >= 20 ? "Excellent! You're saving well!" :
+                   savingsRate >= 10 ? "Good savings rate, keep it up!" :
+                   savingsRate >= 0 ? "Try to save more each month" :
+                   "You're spending more than earning"}
+                </Text>
+              </View>
+            </View>
+            
+            {/* Expense Breakdown */}
+            {expenses.length > 0 && (
+              <View style={styles.analyticsCard}>
+                <Text style={styles.analyticsCardTitle}>📊 Expense Breakdown</Text>
+                {Object.entries(expensesByCategory).map(([category, amount]) => {
+                  const percentage = totalExpenses > 0 ? (amount / totalExpenses * 100) : 0;
+                  return (
+                    <View key={category} style={styles.expenseBreakdownItem}>
+                      <View style={styles.expenseBreakdownHeader}>
+                        <Text style={styles.expenseBreakdownCategory}>
+                          {category.charAt(0).toUpperCase() + category.slice(1)}
+                        </Text>
+                        <Text style={styles.expenseBreakdownAmount}>
+                          ${amount.toFixed(2)} ({percentage.toFixed(1)}%)
+                        </Text>
+                      </View>
+                      <View style={styles.expenseBreakdownBar}>
+                        <View 
+                          style={[
+                            styles.expenseBreakdownFill,
+                            { 
+                              width: `${percentage}%`,
+                              backgroundColor: categoryColors[category] || '#CCCCCC'
+                            }
+                          ]} 
+                        />
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
+            
+            {/* Recent Activity */}
+            <View style={styles.analyticsCard}>
+              <Text style={styles.analyticsCardTitle}>📋 Recent Activity</Text>
+              {[...income.slice(-3).map(item => ({...item, type: 'income'})), 
+                ...expenses.slice(-3).map(item => ({...item, type: 'expense'}))]
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 5)
+                .map((item, index) => (
+                  <View key={`${item.type}-${item.id}`} style={styles.recentActivityItem}>
+                    <Text style={styles.recentActivityIcon}>
+                      {item.type === 'income' ? '💰' : '💸'}
+                    </Text>
+                    <View style={styles.recentActivityDetails}>
+                      <Text style={styles.recentActivityDescription}>{item.description}</Text>
+                      <Text style={styles.recentActivityDate}>{item.date}</Text>
+                    </View>
+                    <Text style={[
+                      styles.recentActivityAmount,
+                      item.type === 'income' ? styles.positive : styles.expenseAmount
+                    ]}>
+                      {item.type === 'income' ? '+' : '-'}${item.amount.toFixed(2)}
+                    </Text>
+                  </View>
+                ))}
+              
+              {income.length === 0 && expenses.length === 0 && (
+                <View style={styles.emptyState}>
+                  <Text style={styles.emptyIcon}>📈</Text>
+                  <Text style={styles.emptyText}>No data to analyze yet</Text>
+                  <Text style={styles.emptySubtext}>Start adding income and expenses to see your analytics!</Text>
+                </View>
+              )}
+            </View>
+            
+            {/* Financial Health Score */}
+            <View style={styles.analyticsCard}>
+              <Text style={styles.analyticsCardTitle}>🏥 Financial Health</Text>
+              <View style={styles.healthScoreContainer}>
+                {(() => {
+                  let score = 0;
+                  let factors = [];
+                  
+                  // Savings rate factor (40 points max)
+                  if (savingsRate >= 20) {
+                    score += 40;
+                    factors.push("✅ Excellent savings rate");
+                  } else if (savingsRate >= 10) {
+                    score += 25;
+                    factors.push("⚠️ Good savings rate");
+                  } else if (savingsRate >= 0) {
+                    score += 10;
+                    factors.push("❌ Low savings rate");
+                  } else {
+                    factors.push("❌ Spending more than earning");
+                  }
+                  
+                  // Income consistency (30 points max)
+                  if (income.length >= 5) {
+                    score += 30;
+                    factors.push("✅ Consistent income tracking");
+                  } else if (income.length >= 2) {
+                    score += 20;
+                    factors.push("⚠️ Some income tracking");
+                  } else {
+                    factors.push("❌ Limited income tracking");
+                  }
+                  
+                  // Expense tracking (30 points max)
+                  if (expenses.length >= 5) {
+                    score += 30;
+                    factors.push("✅ Good expense tracking");
+                  } else if (expenses.length >= 2) {
+                    score += 20;
+                    factors.push("⚠️ Some expense tracking");
+                  } else {
+                    factors.push("❌ Limited expense tracking");
+                  }
+                  
+                  const healthColor = score >= 80 ? '#28a745' : score >= 60 ? '#ffc107' : '#dc3545';
+                  const healthText = score >= 80 ? 'Excellent' : score >= 60 ? 'Good' : score >= 40 ? 'Fair' : 'Needs Work';
+                  
+                  return (
+                    <>
+                      <View style={styles.healthScoreCircle}>
+                        <Text style={[styles.healthScoreNumber, { color: healthColor }]}>
+                          {score}/100
+                        </Text>
+                        <Text style={[styles.healthScoreText, { color: healthColor }]}>
+                          {healthText}
+                        </Text>
+                      </View>
+                      <View style={styles.healthFactors}>
+                        {factors.map((factor, index) => (
+                          <Text key={index} style={styles.healthFactor}>{factor}</Text>
+                        ))}
+                      </View>
+                    </>
+                  );
+                })()}
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      );
+    },
     Settings: () => (
       <View style={styles.screenContainer}>
         <Text style={styles.screenTitle}>⚙️ Settings</Text>
@@ -988,5 +1186,149 @@ const styles = StyleSheet.create({
   },
   navLabelActive: {
     color: '#667eea',
+  },
+  
+  // Analytics Styles
+  analyticsStatsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  analyticsStatCard: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    flex: 1,
+    marginHorizontal: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  analyticsStatValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 5,
+  },
+  analyticsStatLabel: {
+    fontSize: 12,
+    color: '#666',
+    textAlign: 'center',
+  },
+  analyticsCard: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 12,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  analyticsCardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 15,
+  },
+  savingsRateContainer: {
+    alignItems: 'center',
+  },
+  savingsRateValue: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  savingsRateDescription: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+  },
+  warning: {
+    color: '#ffc107',
+  },
+  expenseBreakdownItem: {
+    marginBottom: 15,
+  },
+  expenseBreakdownHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  expenseBreakdownCategory: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  expenseBreakdownAmount: {
+    fontSize: 14,
+    color: '#666',
+  },
+  expenseBreakdownBar: {
+    height: 8,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  expenseBreakdownFill: {
+    height: '100%',
+    borderRadius: 4,
+  },
+  recentActivityItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  recentActivityIcon: {
+    fontSize: 20,
+    marginRight: 15,
+  },
+  recentActivityDetails: {
+    flex: 1,
+  },
+  recentActivityDescription: {
+    fontSize: 14,
+    color: '#333',
+    marginBottom: 2,
+  },
+  recentActivityDate: {
+    fontSize: 12,
+    color: '#666',
+  },
+  recentActivityAmount: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  healthScoreContainer: {
+    alignItems: 'center',
+  },
+  healthScoreCircle: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  healthScoreNumber: {
+    fontSize: 48,
+    fontWeight: 'bold',
+  },
+  healthScoreText: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginTop: 5,
+  },
+  healthFactors: {
+    alignSelf: 'stretch',
+  },
+  healthFactor: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 8,
+    paddingLeft: 10,
   },
 });

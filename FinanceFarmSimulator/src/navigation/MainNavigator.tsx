@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View, StyleSheet } from 'react-native';
+import { AnalyticsScreen } from '../screens/analytics/AnalyticsScreen';
 
 // Simple placeholder screens to get the app working
 const FarmScreen = () => (
@@ -31,15 +32,7 @@ const GoalsScreen = () => (
   <View style={styles.screen}>
     <Text style={styles.title}>🎯 Goals</Text>
     <Text style={styles.subtitle}>Set savings targets</Text>
-    <Text style={styles.description}>Create goals and watch your progress as your farm grows!</Text>
-  </View>
-);
-
-const AnalyticsScreen = () => (
-  <View style={styles.screen}>
-    <Text style={styles.title}>📈 Analytics</Text>
-    <Text style={styles.subtitle}>View your progress</Text>
-    <Text style={styles.description}>See charts and reports of your financial journey!</Text>
+    <Text style={styles.description}>Create goals and watch your progress as your farm goals!</Text>
   </View>
 );
 
