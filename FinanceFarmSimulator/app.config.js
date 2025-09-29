@@ -104,63 +104,7 @@ export default {
       bundler: 'metro',
     },
     plugins: [
-      'expo-router',
-      [
-        'expo-camera',
-        {
-          cameraPermission: 'Allow Finance Farm to access your camera to scan receipts.',
-        },
-      ],
-      [
-        'expo-av',
-        {
-          microphonePermission: 'Allow Finance Farm to access your microphone for voice commands.',
-        },
-      ],
-      [
-        'expo-local-authentication',
-        {
-          faceIDPermission: 'Allow Finance Farm to use Face ID for secure authentication.',
-        },
-      ],
-      [
-        'expo-notifications',
-        {
-          icon: './assets/notification-icon.png',
-          color: '#ffffff',
-          defaultChannel: 'default',
-        },
-      ],
-      [
-        'expo-tracking-transparency',
-        {
-          userTrackingPermission: 'This identifier will be used to deliver personalized ads to you.',
-        },
-      ],
-      [
-        '@react-native-async-storage/async-storage',
-        {
-          // No additional config needed
-        },
-      ],
-      [
-        'expo-secure-store',
-        {
-          // No additional config needed
-        },
-      ],
-      [
-        'expo-sqlite',
-        {
-          // No additional config needed
-        },
-      ],
-      [
-        'expo-dev-client',
-        {
-          // Development builds only
-        },
-      ],
+      // Minimal plugins for basic functionality
     ],
     extra: {
       eas: {

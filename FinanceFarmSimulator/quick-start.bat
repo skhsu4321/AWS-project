@@ -1,55 +1,99 @@
 @echo off
+setlocal enabledelayedexpansion
+title Finance Farm Simulator - Quick Start
+color 0A
+
 echo.
-echo ========================================
-echo  Finance Farm Simulator - Quick Start
-echo ========================================
+echo ==========================================
+echo   Finance Farm Simulator - Quick Start
+echo ==========================================
 echo.
 
-REM Check if Node.js is installed
-node --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo ❌ Node.js is not installed!
+echo 🎮 Step 1: Opening documentation...
+echo.
+
+REM Open documentation files one by one with delays
+echo Opening App Overview Guide...
+start "" "docs\APP_OVERVIEW_GUIDE.html"
+ping 127.0.0.1 -n 3 >nul
+
+echo Opening Setup & Testing Guide...
+start "" "docs\SETUP_TESTING_GUIDE.html"
+ping 127.0.0.1 -n 3 >nul
+
+echo Opening Interactive Demo...
+start "" "demo\index.html"
+ping 127.0.0.1 -n 2 >nul
+
+echo.
+echo ✅ Documentation opened in your browser!
+echo.
+
+echo 🔍 Step 2: Checking Node.js installation...
+node --version >nul 2>nul
+if !errorlevel! neq 0 (
     echo.
-    echo Please install Node.js first:
-    echo 1. Go to https://nodejs.org/
-    echo 2. Download and install the LTS version
-    echo 3. Restart your computer
-    echo 4. Run this script again
+    echo ❌ Node.js is NOT installed!
     echo.
-    pause
-    exit /b 1
+    echo 📥 TO INSTALL NODE.JS:
+    echo    1. Go to https://nodejs.org/
+    echo    2. Download the LTS version ^(left green button^)
+    echo    3. Install and restart your computer
+    echo    4. Run this script again
+    echo.
+    echo 💡 You can still view the documentation that opened!
+    echo.
+    echo Press any key to exit...
+    pause >nul
+    goto :end
 )
 
-echo ✅ Node.js is installed
-node --version
-npm --version
+echo ✅ Node.js is installed!
+for /f "tokens=*" %%i in ('node --version') do set NODE_VERSION=%%i
+echo    Version: !NODE_VERSION!
 echo.
 
-REM Check if we're in the right directory
+echo 🔍 Step 3: Checking project files...
 if not exist "package.json" (
     echo ❌ package.json not found!
-    echo Please run this script from the FinanceFarmSimulator directory
     echo.
-    pause
-    exit /b 1
+    echo Please make sure you are running this script from the
+    echo FinanceFarmSimulator folder.
+    echo.
+    echo Current directory: %CD%
+    echo.
+    echo Press any key to exit...
+    pause >nul
+    goto :end
 )
 
 echo ✅ Found package.json
 echo.
 
-REM Check if node_modules exists
+echo 🔍 Step 4: Checking dependencies...
 if not exist "node_modules" (
     echo 📦 Installing dependencies...
-    echo This may take 2-5 minutes...
+    echo This will take 2-5 minutes, please be patient...
     echo.
-    npm install
-    if %errorlevel% neq 0 (
-        echo ❌ npm install failed!
-        echo Try running: npm cache clean --force
-        echo Then run this script again
-        pause
-        exit /b 1
+    
+    echo Running: npm install --legacy-peer-deps
+    npm install --legacy-peer-deps
+    
+    if !errorlevel! neq 0 (
+        echo.
+        echo ❌ Installation failed!
+        echo.
+        echo Try these solutions:
+        echo    1. npm cache clean --force
+        echo    2. Delete node_modules folder if it exists
+        echo    3. Run this script again
+        echo.
+        echo Press any key to exit...
+        pause >nul
+        goto :end
     )
+    
+    echo.
     echo ✅ Dependencies installed successfully!
     echo.
 ) else (
@@ -57,101 +101,26 @@ if not exist "node_modules" (
     echo.
 )
 
-REM Show options
-echo 🚀 Choose how to start your app:
+echo 🚀 Step 5: Starting the Finance Farm Simulator...
 echo.
-echo 1. Web Browser (Recommended for first time)
-echo 2. Run Tests First
-echo 3. Android Emulator (requires Android Studio)
-echo 4. View Interactive Demo
-echo 5. Check Project Status
+echo The app will open at: http://localhost:8081
 echo.
-set /p choice="Enter your choice (1-5): "
+echo ⏳ Please wait 30-60 seconds for the app to load...
+echo    ^(The first time may take longer^)
+echo.
+echo 💡 What you can do while waiting:
+echo    - Check the documentation that opened
+echo    - The app will automatically open in your browser
+echo.
+echo 🛑 To stop the server: Press Ctrl+C
+echo.
 
-if "%choice%"=="1" (
-    echo.
-    echo 🌐 Starting web development server...
-    echo Your app will open at http://localhost:19006
-    echo Press Ctrl+C to stop the server
-    echo.
-    npm run web
-) else if "%choice%"=="2" (
-    echo.
-    echo 🧪 Running tests...
-    echo.
-    npm run test:unit
-    if %errorlevel% equ 0 (
-        echo.
-        echo ✅ Tests passed! Now starting web server...
-        npm run web
-    )
-) else if "%choice%"=="3" (
-    echo.
-    echo 📱 Starting Android development...
-    echo Make sure Android emulator is running first!
-    echo.
-    npm run android
-) else if "%choice%"=="4" (
-    echo.
-    echo 🎮 Opening interactive demo...
-    start demo\index.html
-    echo Demo opened in your browser!
-) else if "%choice%"=="5" (
-    echo.
-    echo 📊 Checking project status...
-    echo.
-    if exist "src\components\integration\AppIntegration.tsx" (
-        echo ✅ App Integration: Found
-    ) else (
-        echo ❌ App Integration: Missing
-    )
-    
-    if exist "src\services\ErrorHandlingService.ts" (
-        echo ✅ Error Handling: Found
-    ) else (
-        echo ❌ Error Handling: Missing
-    )
-    
-    if exist "src\store\store.ts" (
-        echo ✅ State Management: Found
-    ) else (
-        echo ❌ State Management: Missing
-    )
-    
-    if exist "app.config.js" (
-        echo ✅ App Configuration: Found
-    ) else (
-        echo ❌ App Configuration: Missing
-    )
-    
-    echo.
-    echo 📁 Project Structure:
-    dir /b src\components 2>nul | find /c /v "" > temp.txt
-    set /p componentCount=<temp.txt
-    del temp.txt
-    echo    Components: %componentCount% folders
-    
-    dir /b src\services 2>nul | find /c /v "" > temp.txt
-    set /p serviceCount=<temp.txt
-    del temp.txt
-    echo    Services: %serviceCount% files
-    
-    dir /b src\screens 2>nul | find /c /v "" > temp.txt
-    set /p screenCount=<temp.txt
-    del temp.txt
-    echo    Screens: %screenCount% folders
-    
-    echo.
-    echo 🎯 Your Finance Farm Simulator is ready!
-    echo Run this script again to start testing.
-) else (
-    echo Invalid choice. Please run the script again.
-)
+REM Start the web server
+npm run web
 
+:end
 echo.
-echo 📚 For detailed instructions, see:
-echo    - QUICK_START_GUIDE.md
-echo    - TESTING_ALTERNATIVES.md
-echo    - QUICK_VALIDATION.md
+echo 👋 Thanks for testing Finance Farm Simulator!
 echo.
-pause
+echo Press any key to close this window...
+pause >nul

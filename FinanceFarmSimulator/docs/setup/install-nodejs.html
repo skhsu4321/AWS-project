@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Node.js - Finance Farm Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .step {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .step h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s ease;
+            margin: 10px 10px 10px 0;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        .button.large {
+            font-size: 1.3rem;
+            padding: 20px 40px;
+        }
+
+        .checklist {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            position: relative;
+            padding-left: 40px;
+            font-size: 1.1rem;
+        }
+
+        .checklist li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            font-size: 1.3rem;
+        }
+
+        .alert {
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 1.1rem;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert.info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .alert.warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+        .screenshot {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin: 15px 0;
+        }
+
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .progress li {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            padding: 10px;
+        }
+
+        .progress li:before {
+            content: attr(data-step);
+            display: block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            color: #6c757d;
+            line-height: 40px;
+            margin: 0 auto 10px;
+            font-weight: bold;
+        }
+
+        .progress li.active:before {
+            background: #667eea;
+            color: white;
+        }
+
+        .progress li.completed:before {
+            background: #28a745;
+            color: white;
+            content: "✓";
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .progress {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📥 Install Node.js</h1>
+            <p>Required to run your Finance Farm Simulator</p>
+        </div>
+
+        <ul class="progress">
+            <li data-step="1" class="active">Download</li>
+            <li data-step="2">Install</li>
+            <li data-step="3">Restart</li>
+            <li data-step="4">Test App</li>
+        </ul>
+
+        <div class="step">
+            <h3>🌐 Step 1: Download Node.js</h3>
+            <div class="alert info">
+                <strong>What is Node.js?</strong> It's the runtime that allows your Finance Farm Simulator to run on your computer. It's free, safe, and used by millions of developers worldwide.
+            </div>
+            
+            <p><strong>Click the button below to go to the official Node.js website:</strong></p>
+            <a href="https://nodejs.org/" target="_blank" class="button large">
+                📥 Download Node.js (Official Site)
+            </a>
+            
+            <div class="alert success">
+                <strong>What to do on the website:</strong>
+                <ul class="checklist">
+                    <li>You'll see two green buttons</li>
+                    <li>Click the LEFT button (LTS version)</li>
+                    <li>Download starts automatically</li>
+                    <li>File will be saved to your Downloads folder</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>⚙️ Step 2: Install Node.js</h3>
+            <p><strong>After download completes:</strong></p>
+            <ul class="checklist">
+                <li>Go to your Downloads folder</li>
+                <li>Find file named "node-v20.x.x-x64.msi" (or similar)</li>
+                <li>Double-click to start installer</li>
+                <li>Click "Next" through the wizard</li>
+                <li>Accept license agreement</li>
+                <li><strong>IMPORTANT:</strong> Check "Automatically install necessary tools"</li>
+                <li>Click "Install" and wait (2-3 minutes)</li>
+                <li>Click "Finish" when done</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>🔄 Step 3: Restart Your Computer</h3>
+            <div class="alert warning">
+                <strong>This step is crucial!</strong> Node.js won't work until you restart your computer. Don't skip this step!
+            </div>
+            <p>Save any open work and restart your computer completely.</p>
+        </div>
+
+        <div class="step">
+            <h3>🧪 Step 4: Test Installation</h3>
+            <p><strong>After restart:</strong></p>
+            <ul class="checklist">
+                <li>Press Windows Key + R</li>
+                <li>Type "cmd" and press Enter</li>
+                <li>In the black window, type: <code>node --version</code></li>
+                <li>Press Enter</li>
+                <li>You should see something like: <code>v20.10.0</code></li>
+            </ul>
+            
+            <div class="alert success">
+                <strong>If you see a version number, SUCCESS! ✅</strong><br>
+                Node.js is installed and ready to use.
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>🚀 Step 5: Run Your Finance Farm Simulator</h3>
+            <p><strong>Now you can run your app:</strong></p>
+            
+            <div class="alert info">
+                <strong>Method A: Use the Script</strong><br>
+                Double-click <code>quick-start.bat</code> in your project folder
+            </div>
+            
+            <div class="alert info">
+                <strong>Method B: Manual Commands</strong><br>
+                1. Open Command Prompt (Windows Key + R → cmd)<br>
+                2. Type: <code>cd C:\Users\User\Documents\AWS-project\FinanceFarmSimulator</code><br>
+                3. Type: <code>npm install</code> (wait 2-5 minutes)<br>
+                4. Type: <code>npm run web</code><br>
+                5. Browser opens with your app! 🎉
+            </div>
+            
+            <button class="button" onclick="openManualGuide()">📖 Open Manual Setup Guide</button>
+            <button class="button" onclick="openDemo()">🎮 View Demo While Waiting</button>
+        </div>
+
+        <div class="alert success" style="margin-top: 30px;">
+            <h3>🎯 What You'll Get</h3>
+            <p><strong>Your Finance Farm Simulator includes:</strong></p>
+            <ul class="checklist">
+                <li>🌱 Interactive farm that grows with your financial goals</li>
+                <li>💰 Income and expense tracking with gamification</li>
+                <li>🎯 Visual goal progress and achievements</li>
+                <li>👨‍👩‍👧‍👦 Family-friendly mode for children</li>
+                <li>♿ Full accessibility support</li>
+                <li>📊 Financial analytics and insights</li>
+                <li>🔒 Secure data encryption and privacy</li>
+                <li>📱 Works on web, iOS, and Android</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>🆘 Need Help?</h3>
+            <p>If you run into any issues:</p>
+            <button class="button" onclick="openTroubleshooting()">🛠️ Troubleshooting Guide</button>
+            <button class="button" onclick="openSetupChecker()">🔍 Setup Checker</button>
+            
+            <div class="alert info" style="margin-top: 15px;">
+                <strong>Common Issues:</strong><br>
+                • If "node is not recognized" → Restart computer<br>
+                • If installer fails → Run as Administrator<br>
+                • If download is slow → Try different browser<br>
+                • If still stuck → Check MANUAL_SETUP.md
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openManualGuide() {
+            window.open('MANUAL_SETUP.md', '_blank');
+        }
+
+        function openDemo() {
+            window.open('demo/index.html', '_blank');
+        }
+
+        function openTroubleshooting() {
+            window.open('setup-checker.html', '_blank');
+        }
+
+        function openSetupChecker() {
+            window.open('setup-checker.html', '_blank');
+        }
+
+        // Update progress based on user actions
+        function updateProgress(step) {
+            const steps = document.querySelectorAll('.progress li');
+            steps.forEach((s, index) => {
+                if (index < step) {
+                    s.classList.add('completed');
+                    s.classList.remove('active');
+                } else if (index === step) {
+                    s.classList.add('active');
+                    s.classList.remove('completed');
+                } else {
+                    s.classList.remove('active', 'completed');
+                }
+            });
+        }
+
+        // Check if Node.js might be installed
+        function checkNodeStatus() {
+            // This is a simple check - in reality, we can't detect Node.js from browser
+            const hasNodeHint = localStorage.getItem('nodeInstalled');
+            if (hasNodeHint) {
+                updateProgress(3);
+                document.querySelector('.alert.success').innerHTML += '<br><br><strong>🎉 Node.js appears to be installed! Try running your app now.</strong>';
+            }
+        }
+
+        // Mark Node.js as potentially installed when user clicks download
+        document.querySelector('a[href*="nodejs.org"]').addEventListener('click', function() {
+            setTimeout(() => {
+                localStorage.setItem('nodeDownloaded', 'true');
+                updateProgress(1);
+            }, 1000);
+        });
+
+        checkNodeStatus();
+    </script>
+</body>
+</html>

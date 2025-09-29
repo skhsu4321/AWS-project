@@ -175,23 +175,24 @@ export class AssetLoaderService {
   }
 
   private getAssetPath(assetId: string): string {
-    // Map asset IDs to actual file paths
+    // For web version, use placeholder data URLs or return asset ID
+    // In production, these would be actual image files
     const assetMap: { [key: string]: string } = {
-      crop_tomato_seed: require('../../assets/crops/tomato_seed.png'),
-      crop_tomato_sprout: require('../../assets/crops/tomato_sprout.png'),
-      crop_tomato_growing: require('../../assets/crops/tomato_growing.png'),
-      crop_tomato_mature: require('../../assets/crops/tomato_mature.png'),
-      crop_tomato_harvest: require('../../assets/crops/tomato_harvest.png'),
-      crop_carrot_seed: require('../../assets/crops/carrot_seed.png'),
-      crop_carrot_sprout: require('../../assets/crops/carrot_sprout.png'),
-      crop_carrot_growing: require('../../assets/crops/carrot_growing.png'),
-      crop_carrot_mature: require('../../assets/crops/carrot_mature.png'),
-      crop_carrot_harvest: require('../../assets/crops/carrot_harvest.png'),
-      crop_corn_seed: require('../../assets/crops/corn_seed.png'),
-      crop_corn_sprout: require('../../assets/crops/corn_sprout.png'),
-      crop_corn_growing: require('../../assets/crops/corn_growing.png'),
-      crop_corn_mature: require('../../assets/crops/corn_mature.png'),
-      crop_corn_harvest: require('../../assets/crops/corn_harvest.png'),
+      crop_tomato_seed: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iOCIgZmlsbD0iIzg4NTQzMyIvPgo8L3N2Zz4K',
+      crop_tomato_sprout: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIyMCIgcj0iNiIgZmlsbD0iIzg4NTQzMyIvPgo8cmVjdCB4PSIxNCIgeT0iOCIgd2lkdGg9IjQiIGhlaWdodD0iMTIiIGZpbGw9IiM0Q0FGNTASCZ8L3N2Zz4K',
+      crop_tomato_growing: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIyMCIgcj0iOCIgZmlsbD0iI0ZGNkI2QiIvPgo8cmVjdCB4PSIxNCIgeT0iNCIgd2lkdGg9IjQiIGhlaWdodD0iMTYiIGZpbGw9IiM0Q0FGNTASCZ8L3N2Zz4K',
+      crop_tomato_mature: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxOCIgcj0iMTAiIGZpbGw9IiNGRjZCNkIiLz4KPHJlY3QgeD0iMTQiIHk9IjIiIHdpZHRoPSI0IiBoZWlnaHQ9IjE2IiBmaWxsPSIjNENBRjUwIi8+Cjwvc3ZnPgo=',
+      crop_tomato_harvest: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTIiIGZpbGw9IiNGRjZCNkIiLz4KPC9zdmc+Cg==',
+      crop_carrot_seed: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iOCIgZmlsbD0iIzg4NTQzMyIvPgo8L3N2Zz4K',
+      crop_carrot_sprout: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGVsbGlwc2UgY3g9IjE2IiBjeT0iMjQiIHJ4PSI0IiByeT0iNiIgZmlsbD0iI0ZGOEMwMCIvPgo8cmVjdCB4PSIxNCIgeT0iOCIgd2lkdGg9IjQiIGhlaWdodD0iMTYiIGZpbGw9IiM0Q0FGNTASCZ8L3N2Zz4K',
+      crop_carrot_growing: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGVsbGlwc2UgY3g9IjE2IiBjeT0iMjIiIHJ4PSI2IiByeT0iOCIgZmlsbD0iI0ZGOEMwMCIvPgo8cmVjdCB4PSIxNCIgeT0iNCIgd2lkdGg9IjQiIGhlaWdodD0iMTgiIGZpbGw9IiM0Q0FGNTASCZ8L3N2Zz4K',
+      crop_carrot_mature: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGVsbGlwc2UgY3g9IjE2IiBjeT0iMjAiIHJ4PSI4IiByeT0iMTAiIGZpbGw9IiNGRjhDMDAiLz4KPHJlY3QgeD0iMTQiIHk9IjIiIHdpZHRoPSI0IiBoZWlnaHQ9IjE4IiBmaWxsPSIjNENBRjUwIi8+Cjwvc3ZnPgo=',
+      crop_carrot_harvest: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGVsbGlwc2UgY3g9IjE2IiBjeT0iMTYiIHJ4PSIxMCIgcnk9IjEyIiBmaWxsPSIjRkY4QzAwIi8+Cjwvc3ZnPgo=',
+      crop_corn_seed: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iOCIgZmlsbD0iIzg4NTQzMyIvPgo8L3N2Zz4K',
+      crop_corn_sprout: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMTQiIHk9IjE2IiB3aWR0aD0iNCIgaGVpZ2h0PSIxMiIgZmlsbD0iI0ZGRDkzRCIvPgo8cmVjdCB4PSIxNCIgeT0iOCIgd2lkdGg9IjQiIGhlaWdodD0iOCIgZmlsbD0iIzRDQUY1MCIvPgo8L3N2Zz4K',
+      crop_corn_growing: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iOCIgaGVpZ2h0PSIxNiIgZmlsbD0iI0ZGRDkzRCIvPgo8cmVjdCB4PSIxNCIgeT0iNCIgd2lkdGg9IjQiIGhlaWdodD0iOCIgZmlsbD0iIzRDQUY1MCIvPgo8L3N2Zz4K',
+      crop_corn_mature: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMTAiIHk9IjgiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyMCIgZmlsbD0iI0ZGRDkzRCIvPgo8cmVjdCB4PSIxNCIgeT0iMiIgd2lkdGg9IjQiIGhlaWdodD0iNiIgZmlsbD0iIzRDQUY1MCIvPgo8L3N2Zz4K',
+      crop_corn_harvest: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iOCIgeT0iNCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjI0IiBmaWxsPSIjRkZEOTNEIi8+Cjwvc3ZnPgo=',
     };
 
     return assetMap[assetId] || assetId;

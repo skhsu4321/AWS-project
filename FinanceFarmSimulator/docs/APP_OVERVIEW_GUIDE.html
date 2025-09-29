@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Farm Simulator - App Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4a7c59;
+        }
+
+        .language-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #4a7c59;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .language-switch:hover {
+            background: #5a8a67;
+        }
+
+        h1 {
+            color: #2c5530;
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin: 10px 0 0 0;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+        }
+
+        .nav-tab.active {
+            background: #4a7c59;
+            color: white;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+
+        .nav-tab.active:hover {
+            background: #5a8a67;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-color: #4a7c59;
+        }
+
+        .feature-card.active {
+            border-color: #4a7c59;
+            background: #f0f8f0;
+        }
+
+        .technical-details {
+            display: none;
+            background: #e8f5e8;
+            border: 1px solid #4a7c59;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .technical-details.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .technical-details h5 {
+            color: #2c5530;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .technical-details code {
+            background: #d4edda;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            color: #4a7c59;
+            margin: 0 0 10px 0;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .tech-badge {
+            background: #4a7c59;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .screenshot-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .screenshot {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .screenshot-placeholder {
+            font-size: 4em;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="language-switch" onclick="toggleLanguage()">
+        <span id="lang-btn-text">中文</span>
+    </button>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="main-title">🌱 Finance Farm Simulator</h1>
+            <p class="subtitle" id="main-subtitle">Gamified Personal Finance Management App</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('overview')" id="tab-overview">App Overview</button>
+            <button class="nav-tab" onclick="showTab('features')" id="tab-features">Features</button>
+            <button class="nav-tab" onclick="showTab('screenshots')" id="tab-screenshots">Screenshots</button>
+            <button class="nav-tab" onclick="showTab('technology')" id="tab-technology">Technology</button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="info-box">
+                <h3 id="what-is-title">🎯 What is Finance Farm Simulator?</h3>
+                <p id="what-is-desc">Finance Farm Simulator transforms boring financial management into an engaging farm
+                    simulation game. Users track their income, expenses, and savings goals while watching their virtual
+                    farm grow and prosper based on their real financial progress.</p>
+            </div>
+
+            <h3 id="how-it-works-title">🌾 How It Works</h3>
+            <div class="feature-grid">
+                <div class="feature-card" onclick="toggleTechnicalDetails('income-tech')">
+                    <span class="feature-icon">💰</span>
+                    <h4 id="income-title">Income = Fertilizer</h4>
+                    <p id="income-desc">Every time you log income, your crops get fertilizer and grow faster. Build
+                        income streaks for bonus growth!</p>
+                    <div id="income-tech" class="technical-details">
+                        <h5>🧮 Technical Implementation</h5>
+                        <p><strong>Growth Formula:</strong></p>
+                        <code>cropGrowth = (incomeAmount / goalTarget) * 0.1 * streakMultiplier</code>
+                        <p><strong>Streak Bonus:</strong></p>
+                        <code>streakMultiplier = 1 + (streakDays * 0.05) // Max 2.0x</code>
+                        <p><strong>Example:</strong> $500 income toward $5000 goal with 10-day streak = 1.5% growth</p>
+                        <p><strong>Files:</strong> <code>src/components/income/FertilizerAnimation.tsx</code></p>
+                    </div>
+                </div>
+                <div class="feature-card" onclick="toggleTechnicalDetails('savings-tech')">
+                    <span class="feature-icon">🌱</span>
+                    <h4 id="savings-title">Savings = Crops</h4>
+                    <p id="savings-desc">Your savings goals become virtual crops. The more you save, the more your crops
+                        grow and flourish.</p>
+                    <div id="savings-tech" class="technical-details">
+                        <h5>🧮 Technical Implementation</h5>
+                        <p><strong>Progress Calculation:</strong></p>
+                        <code>progressPercent = (currentAmount / targetAmount) * 100</code>
+                        <p><strong>Crop Stages:</strong></p>
+                        <ul>
+                            <li>Seed: 0-25% progress</li>
+                            <li>Sprout: 25-50% progress</li>
+                            <li>Growing: 50-75% progress</li>
+                            <li>Mature: 75-99% progress</li>
+                            <li>Harvest: 100% progress</li>
+                        </ul>
+                        <p><strong>Files:</strong> <code>src/components/goals/GoalProgressBar.tsx</code></p>
+                    </div>
+                </div>
+                <div class="feature-card" onclick="toggleTechnicalDetails('expenses-tech')">
+                    <span class="feature-icon">🌿</span>
+                    <h4 id="expenses-title">Expenses = Weeds</h4>
+                    <p id="expenses-desc">Expenses appear as weeds in your farm. Pull them out by categorizing and
+                        managing your spending.</p>
+                    <div id="expenses-tech" class="technical-details">
+                        <h5>🧮 Technical Implementation</h5>
+                        <p><strong>Weed Density Formula:</strong></p>
+                        <code>weedCount = Math.floor((totalExpenses / monthlyIncome) * 10)</code>
+                        <p><strong>Budget Alert Thresholds:</strong></p>
+                        <ul>
+                            <li>Yellow Warning: spent ≥ budget * 0.8 (80%)</li>
+                            <li>Orange Alert: spent ≥ budget * 0.9 (90%)</li>
+                            <li>Red Critical: spent ≥ budget * 1.0 (100%)</li>
+                        </ul>
+                        <p><strong>Files:</strong> <code>src/components/expenses/WeedPullingInterface.tsx</code></p>
+                    </div>
+                </div>
+                <div class="feature-card" onclick="toggleTechnicalDetails('goals-tech')">
+                    <span class="feature-icon">🏆</span>
+                    <h4 id="goals-title">Goals = Harvest</h4>
+                    <p id="goals-desc">Complete financial goals to harvest your crops and unlock new farm areas and
+                        features.</p>
+                    <div id="goals-tech" class="technical-details">
+                        <h5>🧮 Technical Implementation</h5>
+                        <p><strong>Time Estimation:</strong></p>
+                        <code>daysRemaining = Math.ceil((targetAmount - currentAmount) / avgDailyIncome)</code>
+                        <p><strong>On-Track Calculation:</strong></p>
+                        <code>onTrack = (currentAmount / daysElapsed) >= (targetAmount / totalDays)</code>
+                        <p><strong>Harvest Animation:</strong> Triggers when progress reaches 100%</p>
+                        <p><strong>Files:</strong> <code>src/components/goals/GoalCompletionModal.tsx</code></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <h4 id="target-users-title">👥 Perfect For</h4>
+                <ul id="target-users-list">
+                    <li>Families wanting to teach kids about money</li>
+                    <li>Young adults starting their financial journey</li>
+                    <li>Anyone who finds traditional budgeting apps boring</li>
+                    <li>People who enjoy gamification and visual progress</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Features Tab -->
+        <div id="features" class="tab-content">
+            <h3 id="core-features-title">🎮 Core Features</h3>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🌾</span>
+                    <h4 id="farm-viz-title">Interactive Farm</h4>
+                    <p id="farm-viz-desc">Beautiful 2D farm visualization that responds to your financial activities in
+                        real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <h4 id="expense-track-title">Smart Expense Tracking</h4>
+                    <p id="expense-track-desc">OCR receipt scanning, automatic categorization, and budget alerts.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <h4 id="goal-mgmt-title">Visual Goal Management</h4>
+                    <p id="goal-mgmt-desc">Set savings goals and watch them grow as virtual crops with progress
+                        animations.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">👶</span>
+                    <h4 id="child-mode-title">Child-Friendly Mode</h4>
+                    <p id="child-mode-desc">Simplified interface with educational tooltips and parental controls.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📈</span>
+                    <h4 id="analytics-title">Financial Analytics</h4>
+                    <p id="analytics-desc">Comprehensive reports, charts, and insights about your spending patterns.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h4 id="security-title">Bank-Level Security</h4>
+                    <p id="security-desc">End-to-end encryption, secure storage, and privacy controls.</p>
+                </div>
+            </div>
+
+            <h3 id="advanced-features-title">⚡ Advanced Features</h3>
+            <ul id="advanced-features-list">
+                <li><strong>Offline Sync:</strong> Works without internet, syncs when connected</li>
+                <li><strong>Voice Commands:</strong> Add expenses and income with voice</li>
+                <li><strong>Accessibility:</strong> Full screen reader and keyboard navigation support</li>
+                <li><strong>Performance Optimized:</strong> Smooth animations even on older devices</li>
+                <li><strong>Multi-Platform:</strong> Works on iOS, Android, and web browsers</li>
+            </ul>
+        </div>
+
+        <!-- Screenshots Tab -->
+        <div id="screenshots" class="tab-content">
+            <h3 id="app-screens-title">📱 App Screens</h3>
+            <p id="app-screens-desc">Here's what the Finance Farm Simulator looks like in action:</p>
+
+            <div class="screenshot-gallery">
+                <div class="screenshot">
+                    <div class="screenshot-placeholder">🌾</div>
+                    <h4 id="farm-screen-title">Farm Screen</h4>
+                    <p id="farm-screen-desc">Main interactive farm view showing your financial progress as growing crops
+                    </p>
+                </div>
+                <div class="screenshot">
+                    <div class="screenshot-placeholder">💰</div>
+                    <h4 id="income-screen-title">Income Logging</h4>
+                    <p id="income-screen-desc">Easy income entry with streak tracking and fertilizer animations</p>
+                </div>
+                <div class="screenshot">
+                    <div class="screenshot-placeholder">📊</div>
+                    <h4 id="expense-screen-title">Expense Tracking</h4>
+                    <p id="expense-screen-desc">Weed-pulling interface for managing and categorizing expenses</p>
+                </div>
+                <div class="screenshot">
+                    <div class="screenshot-placeholder">🎯</div>
+                    <h4 id="goals-screen-title">Goals Dashboard</h4>
+                    <p id="goals-screen-desc">Visual progress tracking for all your financial goals</p>
+                </div>
+                <div class="screenshot">
+                    <div class="screenshot-placeholder">👶</div>
+                    <h4 id="child-screen-title">Child Mode</h4>
+                    <p id="child-screen-desc">Simplified, educational interface designed for young users</p>
+                </div>
+                <div class="screenshot">
+                    <div class="screenshot-placeholder">📈</div>
+                    <h4 id="analytics-screen-title">Analytics</h4>
+                    <p id="analytics-screen-desc">Comprehensive financial reports and spending insights</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p id="demo-note"><strong>💡 Try the Demo:</strong> You can see a working preview of the app by opening
+                    <code>demo/index.html</code> in your browser!
+                </p>
+            </div>
+        </div>
+
+        <!-- Technology Tab -->
+        <div id="technology" class="tab-content">
+            <h3 id="tech-stack-title">🛠️ Technology Stack & Developer Details</h3>
+
+            <h4 id="frontend-title">Frontend Architecture</h4>
+            <div class="tech-stack">
+                <span class="tech-badge">React Native 0.81.4</span>
+                <span class="tech-badge">Expo SDK 54</span>
+                <span class="tech-badge">TypeScript 5.9.2</span>
+                <span class="tech-badge">React Navigation 7</span>
+                <span class="tech-badge">React Native Reanimated 4</span>
+            </div>
+
+            <h4 id="state-mgmt-title">State Management & Data</h4>
+            <div class="tech-stack">
+                <span class="tech-badge">Redux Toolkit</span>
+                <span class="tech-badge">React Query</span>
+                <span class="tech-badge">Async Storage</span>
+                <span class="tech-badge">SQLite</span>
+            </div>
+
+            <h4 id="testing-title">Testing & Quality</h4>
+            <div class="tech-stack">
+                <span class="tech-badge">Jest 30.2.0</span>
+                <span class="tech-badge">React Native Testing Library</span>
+                <span class="tech-badge">ESLint 9.36.0</span>
+                <span class="tech-badge">Prettier 3.6.2</span>
+                <span class="tech-badge">TypeScript</span>
+            </div>
+
+            <h4 id="deployment-title">Deployment & CI/CD</h4>
+            <div class="tech-stack">
+                <span class="tech-badge">EAS Build</span>
+                <span class="tech-badge">GitHub Actions</span>
+                <span class="tech-badge">Expo Updates</span>
+            </div>
+
+            <div class="info-box">
+                <h4 id="math-functions-title">🧮 Mathematical Functions & Algorithms</h4>
+                
+                <h5>Farm Growth Calculation</h5>
+                <p><strong>Formula:</strong> <code>cropGrowth = (incomeAmount / goalTarget) * baseGrowthRate * streakMultiplier</code></p>
+                <ul>
+                    <li><strong>baseGrowthRate:</strong> 0.1 (10% per income entry)</li>
+                    <li><strong>streakMultiplier:</strong> 1 + (streakDays * 0.05) // Max 2.0x</li>
+                    <li><strong>Example:</strong> $500 income toward $5000 goal with 10-day streak = 1.5% growth</li>
+                </ul>
+
+                <h5>Budget Alert System</h5>
+                <ul>
+                    <li><strong>Yellow Warning:</strong> spent ≥ budget * 0.8 (80%)</li>
+                    <li><strong>Orange Alert:</strong> spent ≥ budget * 0.9 (90%)</li>
+                    <li><strong>Red Critical:</strong> spent ≥ budget * 1.0 (100%)</li>
+                    <li><strong>Weed Formula:</strong> <code>weedCount = Math.floor((totalExpenses / monthlyIncome) * 10)</code></li>
+                </ul>
+
+                <h5>Goal Progress Tracking</h5>
+                <ul>
+                    <li><strong>Progress:</strong> <code>(currentAmount / targetAmount) * 100</code></li>
+                    <li><strong>Days Remaining:</strong> <code>Math.ceil((target - current) / avgDailyIncome)</code></li>
+                    <li><strong>Crop Stages:</strong> Seed (0-25%), Sprout (25-50%), Growing (50-75%), Mature (75-99%), Harvest (100%)</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h4 id="chart-implementation-title">📊 Chart & Graph Implementation</h4>
+                
+                <h5>Income vs Expense Chart</h5>
+                <ul>
+                    <li><strong>Type:</strong> Line Chart with dual Y-axis</li>
+                    <li><strong>Library:</strong> react-native-chart-kit</li>
+                    <li><strong>Data:</strong> Daily/Weekly/Monthly aggregates</li>
+                    <li><strong>Colors:</strong> Income (#4CAF50), Expenses (#F44336)</li>
+                </ul>
+
+                <h5>Spending Category Breakdown</h5>
+                <ul>
+                    <li><strong>Type:</strong> Pie Chart with percentages</li>
+                    <li><strong>Categories:</strong> Food, Transport, Entertainment, Bills, Other</li>
+                    <li><strong>Formula:</strong> <code>categoryPercent = (categoryTotal / totalExpenses) * 100</code></li>
+                </ul>
+
+                <h5>Savings Trend Analysis</h5>
+                <ul>
+                    <li><strong>Type:</strong> Area Chart with trend line</li>
+                    <li><strong>Formula:</strong> <code>savings = totalIncome - totalExpenses</code></li>
+                    <li><strong>Projection:</strong> Linear regression extends 90 days into future</li>
+                </ul>
+            </div>
+
+            <div class="success-box">
+                <h4 id="implementation-status-title">✅ Implementation Status</h4>
+                
+                <h5>Completed Features</h5>
+                <ul>
+                    <li><strong>Core Architecture:</strong> Redux store, navigation, TypeScript setup</li>
+                    <li><strong>UI Components:</strong> All screens, modals, forms designed</li>
+                    <li><strong>Authentication:</strong> Login/register with age-based modes</li>
+                    <li><strong>Data Models:</strong> User, Income, Expense, Goal entities</li>
+                    <li><strong>Testing Framework:</strong> Unit, integration, E2E test setup</li>
+                    <li><strong>Security:</strong> Encryption, secure storage, privacy controls</li>
+                </ul>
+            </div>
+
+            <div style="background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <h4 id="in-progress-title">🔄 Functions Not Yet Done</h4>
+                
+                <h5>Farm Animations</h5>
+                <ul>
+                    <li><strong>Status:</strong> Partially implemented</li>
+                    <li><strong>Missing:</strong> Smooth crop growth transitions, particle effects for fertilizer, weed-pulling animations</li>
+                    <li><strong>Files:</strong> src/components/farm/FarmAnimations.tsx needs completion</li>
+                </ul>
+
+                <h5>OCR Receipt Scanning</h5>
+                <ul>
+                    <li><strong>Status:</strong> Camera integration ready</li>
+                    <li><strong>Missing:</strong> Text recognition processing, item extraction algorithms</li>
+                    <li><strong>Files:</strong> src/components/expenses/ReceiptScanner.tsx placeholder only</li>
+                </ul>
+
+                <h5>Real-time Cloud Sync</h5>
+                <ul>
+                    <li><strong>Status:</strong> Offline storage works</li>
+                    <li><strong>Missing:</strong> Cloud synchronization, conflict resolution, multi-device support</li>
+                    <li><strong>Files:</strong> src/services/OfflineService.ts needs cloud integration</li>
+                </ul>
+
+                <h5>Push Notifications</h5>
+                <ul>
+                    <li><strong>Status:</strong> Framework setup complete</li>
+                    <li><strong>Missing:</strong> Budget alerts, goal reminders, streak notifications</li>
+                    <li><strong>Files:</strong> Notification service not implemented</li>
+                </ul>
+
+                <h5>Advanced Analytics</h5>
+                <ul>
+                    <li><strong>Status:</strong> Basic charts implemented</li>
+                    <li><strong>Missing:</strong> Predictive analysis, spending insights, AI recommendations</li>
+                    <li><strong>Files:</strong> src/services/AnalyticsService.ts needs ML algorithms</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h4 id="example-scenarios-title">💡 Example Usage Scenarios</h4>
+                
+                <h5>Scenario 1: Family with Children</h5>
+                <ul>
+                    <li><strong>Setup:</strong> Parent account ($5000/month), Child account ($20/week allowance)</li>
+                    <li><strong>Goals:</strong> Family vacation ($3000), Emergency fund ($10000)</li>
+                    <li><strong>Behavior:</strong> Parent logs $150 grocery expense → 3 weeds appear</li>
+                    <li><strong>Result:</strong> Child sees educational tooltips, parent gets budget alerts</li>
+                </ul>
+
+                <h5>Scenario 2: College Student</h5>
+                <ul>
+                    <li><strong>Income:</strong> $800/month job + $300 family support</li>
+                    <li><strong>Goals:</strong> Textbooks ($500), Spring break ($1200)</li>
+                    <li><strong>Challenge:</strong> Overspends on entertainment → Farm fills with weeds</li>
+                    <li><strong>Success:</strong> 7-day streak, stays within budget, completes goals</li>
+                </ul>
+            </div>
+
+            <div style="background: #e7f3ff; border: 1px solid #bee5eb; color: #004085; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <h4 id="demo-limitations-title">⚠️ Current Demo Limitations</h4>
+                <ul>
+                    <li><strong>Web Version:</strong> Shows UI mockup only, no data persistence or animations</li>
+                    <li><strong>Mobile Version:</strong> Core functionality works, animations in progress</li>
+                    <li><strong>Database:</strong> Local SQLite only, no cloud backup yet</li>
+                    <li><strong>Performance:</strong> Not optimized for large datasets (>1000 transactions)</li>
+                    <li><strong>Testing:</strong> Use mobile devices or emulators for full functionality</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+            <h3 id="ready-title" style="color: #4a7c59; margin-top: 0;">🚀 Ready to Get Started?</h3>
+            <p id="ready-desc">Check out the <strong>Setup & Testing Guide</strong> to learn how to install and test the
+                app!</p>
+            <a href="SETUP_TESTING_GUIDE.html"
+                style="background: #4a7c59; color: white; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px;">
+                <span id="setup-guide-btn">Go to Setup Guide</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'en';
+
+        const translations = {
+            en: {
+                'lang-btn-text': '中文',
+                'main-title': '🌱 Finance Farm Simulator',
+                'main-subtitle': 'Gamified Personal Finance Management App',
+                'tab-overview': 'App Overview',
+                'tab-features': 'Features',
+                'tab-screenshots': 'Screenshots',
+                'tab-technology': 'Technology',
+                'what-is-title': '🎯 What is Finance Farm Simulator?',
+                'what-is-desc': 'Finance Farm Simulator transforms boring financial management into an engaging farm simulation game. Users track their income, expenses, and savings goals while watching their virtual farm grow and prosper based on their real financial progress.',
+                'how-it-works-title': '🌾 How It Works',
+                'income-title': 'Income = Fertilizer',
+                'income-desc': 'Every time you log income, your crops get fertilizer and grow faster. Build income streaks for bonus growth!',
+                'savings-title': 'Savings = Crops',
+                'savings-desc': 'Your savings goals become virtual crops. The more you save, the more your crops grow and flourish.',
+                'expenses-title': 'Expenses = Weeds',
+                'expenses-desc': 'Expenses appear as weeds in your farm. Pull them out by categorizing and managing your spending.',
+                'goals-title': 'Goals = Harvest',
+                'goals-desc': 'Complete financial goals to harvest your crops and unlock new farm areas and features.',
+                'target-users-title': '👥 Perfect For',
+                'core-features-title': '🎮 Core Features',
+                'farm-viz-title': 'Interactive Farm',
+                'farm-viz-desc': 'Beautiful 2D farm visualization that responds to your financial activities in real-time.',
+                'expense-track-title': 'Smart Expense Tracking',
+                'expense-track-desc': 'OCR receipt scanning, automatic categorization, and budget alerts.',
+                'goal-mgmt-title': 'Visual Goal Management',
+                'goal-mgmt-desc': 'Set savings goals and watch them grow as virtual crops with progress animations.',
+                'child-mode-title': 'Child-Friendly Mode',
+                'child-mode-desc': 'Simplified interface with educational tooltips and parental controls.',
+                'analytics-title': 'Financial Analytics',
+                'analytics-desc': 'Comprehensive reports, charts, and insights about your spending patterns.',
+                'security-title': 'Bank-Level Security',
+                'security-desc': 'End-to-end encryption, secure storage, and privacy controls.',
+                'advanced-features-title': '⚡ Advanced Features',
+                'app-screens-title': '📱 App Screens',
+                'app-screens-desc': 'Here\'s what the Finance Farm Simulator looks like in action:',
+                'farm-screen-title': 'Farm Screen',
+                'farm-screen-desc': 'Main interactive farm view showing your financial progress as growing crops',
+                'income-screen-title': 'Income Logging',
+                'income-screen-desc': 'Easy income entry with streak tracking and fertilizer animations',
+                'expense-screen-title': 'Expense Tracking',
+                'expense-screen-desc': 'Weed-pulling interface for managing and categorizing expenses',
+                'goals-screen-title': 'Goals Dashboard',
+                'goals-screen-desc': 'Visual progress tracking for all your financial goals',
+                'child-screen-title': 'Child Mode',
+                'child-screen-desc': 'Simplified, educational interface designed for young users',
+                'analytics-screen-title': 'Analytics',
+                'analytics-screen-desc': 'Comprehensive financial reports and spending insights',
+                'demo-note': '<strong>💡 Try the Demo:</strong> You can see a working preview of the app by opening <code>demo/index.html</code> in your browser!',
+                'tech-stack-title': '🛠️ Technology Stack',
+                'frontend-title': 'Frontend',
+                'state-mgmt-title': 'State Management',
+                'testing-title': 'Testing & Quality',
+                'deployment-title': 'Deployment',
+                'ready-title': '🚀 Ready to Get Started?',
+                'ready-desc': 'Check out the <strong>Setup & Testing Guide</strong> to learn how to install and test the app!',
+                'setup-guide-btn': 'Go to Setup Guide'
+            },
+            zh: {
+                'lang-btn-text': 'English',
+                'main-title': '🌱 理財農場模擬器',
+                'main-subtitle': '遊戲化個人理財管理應用程式',
+                'tab-overview': '應用程式概覽',
+                'tab-features': '功能特色',
+                'tab-screenshots': '畫面截圖',
+                'tab-technology': '技術架構',
+                'what-is-title': '� 什麼是理財H農場模擬器？',
+                'what-is-desc': '理財農場模擬器將枯燥的財務管理轉變為引人入勝的農場模擬遊戲。用戶可以追蹤收入、支出和儲蓄目標，同時觀看虛擬農場根據真實的財務進展成長和繁榮。',
+                'how-it-works-title': '🌾 運作方式',
+                'income-title': '收入 = 肥料',
+                'income-desc': '每次記錄收入時，您的作物就會獲得肥料並成長得更快。建立收入連續記錄以獲得額外成長！',
+                'savings-title': '儲蓄 = 作物',
+                'savings-desc': '您的儲蓄目標變成虛擬作物。您儲蓄得越多，作物就成長得越茂盛。',
+                'expenses-title': '支出 = 雜草',
+                'expenses-desc': '支出在您的農場中顯示為雜草。通過分類和管理支出來拔除它們。',
+                'goals-title': '目標 = 收穫',
+                'goals-desc': '完成財務目標以收穫作物並解鎖新的農場區域和功能。',
+                'target-users-title': '👥 完美適用於',
+                'core-features-title': '🎮 核心功能',
+                'farm-viz-title': '互動農場',
+                'farm-viz-desc': '美麗的2D農場視覺化，即時回應您的財務活動。',
+                'expense-track-title': '智能支出追蹤',
+                'expense-track-desc': 'OCR收據掃描、自動分類和預算警報。',
+                'goal-mgmt-title': '視覺化目標管理',
+                'goal-mgmt-desc': '設定儲蓄目標並觀看它們作為虛擬作物成長，配有進度動畫。',
+                'child-mode-title': '兒童友善模式',
+                'child-mode-desc': '簡化介面，配有教育提示和家長控制。',
+                'analytics-title': '財務分析',
+                'analytics-desc': '全面的報告、圖表和支出模式洞察。',
+                'security-title': '銀行級安全性',
+                'security-desc': '端到端加密、安全儲存和隱私控制。',
+                'advanced-features-title': '⚡ 進階功能',
+                'app-screens-title': '📱 應用程式畫面',
+                'app-screens-desc': '以下是理財農場模擬器的實際操作畫面：',
+                'farm-screen-title': '農場畫面',
+                'farm-screen-desc': '主要互動農場視圖，顯示您的財務進展為成長中的作物',
+                'income-screen-title': '收入記錄',
+                'income-screen-desc': '簡易收入輸入，配有連續記錄追蹤和肥料動畫',
+                'expense-screen-title': '支出追蹤',
+                'expense-screen-desc': '拔草介面，用於管理和分類支出',
+                'goals-screen-title': '目標儀表板',
+                'goals-screen-desc': '所有財務目標的視覺進度追蹤',
+                'child-screen-title': '兒童模式',
+                'child-screen-desc': '為年輕用戶設計的簡化教育介面',
+                'analytics-screen-title': '分析',
+                'analytics-screen-desc': '全面的財務報告和支出洞察',
+                'demo-note': '<strong>💡 試用演示：</strong>您可以在瀏覽器中開啟<code>demo/index.html</code>來查看應用程式的工作預覽！',
+                'tech-stack-title': '🛠️ 技術堆疊',
+                'frontend-title': '前端',
+                'state-mgmt-title': '狀態管理',
+                'testing-title': '測試與品質',
+                'deployment-title': '部署',
+                'ready-title': '🚀 準備開始了嗎？',
+                'ready-desc': '查看<strong>設定與測試指南</strong>來學習如何安裝和測試應用程式！',
+                'setup-guide-btn': '前往設定指南'
+            }
+        };
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'zh' : 'en';
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            const trans = translations[currentLang];
+
+            Object.keys(trans).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (key === 'demo-note' || key === 'ready-desc') {
+                        element.innerHTML = trans[key];
+                    } else {
+                        element.textContent = trans[key];
+                    }
+                }
+            });
+        }
+
+        function toggleTechnicalDetails(detailId) {
+            const detail = document.getElementById(detailId);
+            const card = detail.parentElement;
+            
+            if (detail.classList.contains('active')) {
+                detail.classList.remove('active');
+                card.classList.remove('active');
+            } else {
+                // Hide all other technical details
+                document.querySelectorAll('.technical-details.active').forEach(d => {
+                    d.classList.remove('active');
+                    d.parentElement.classList.remove('active');
+                });
+                
+                // Show this one
+                detail.classList.add('active');
+                card.classList.add('active');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            updateLanguage();
+        });
+    </script>
+</body>
+
+</html>

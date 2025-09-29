@@ -1,22 +1,47 @@
-# Finance Farm Simulator
+# 🌱 Finance Farm Simulator
 
 A gamified financial management mobile app that transforms financial tasks into an engaging farm simulation experience.
 
-## Project Structure
+## 📖 Documentation
+
+### 🎯 For Beginners (English/中文)
+- **📱 [App Overview Guide](docs/APP_OVERVIEW_GUIDE.html)** - Learn about the app features and technology
+- **🛠️ [Setup & Testing Guide](docs/SETUP_TESTING_GUIDE.html)** - Step-by-step setup and testing instructions
+
+### 👨‍💻 For Developers
+- **📚 [All Documentation](docs/index.html)** - Documentation hub with all guides
+
+### Quick Links
+- 🚀 [Quick Start Guide](docs/setup/QUICK_START_GUIDE.md)
+- 🔧 [Manual Setup](docs/setup/MANUAL_SETUP.md)
+- 🧪 [Testing Alternatives](docs/TESTING_ALTERNATIVES.md)
+- 📊 [Implementation Docs](docs/implementation/)
+
+## 📁 Project Structure
 
 ```
-src/
-├── components/          # React Native UI components
-│   ├── auth/           # Authentication components
-│   ├── common/         # Reusable UI components
-│   ├── farm/           # Farm-related components
-│   └── financial/      # Financial management components
-├── navigation/         # React Navigation configuration
-├── screens/           # Screen components
-├── services/          # Business logic and API services
-├── store/             # Redux store and slices
-├── models/            # TypeScript interfaces and types
-└── utils/             # Utility functions and constants
+FinanceFarmSimulator/
+├── 📁 src/                          # Main source code
+│   ├── 📁 components/               # React components by feature
+│   │   ├── 📁 accessibility/        # Accessibility components
+│   │   ├── 📁 analytics/           # Analytics components
+│   │   ├── 📁 child/               # Child mode components
+│   │   ├── 📁 common/              # Reusable components
+│   │   ├── 📁 expenses/            # Expense tracking
+│   │   ├── 📁 farm/                # Farm visualization
+│   │   ├── 📁 goals/               # Goal management
+│   │   ├── 📁 income/              # Income logging
+│   │   └── 📁 integration/         # App integration
+│   ├── 📁 screens/                 # Screen components
+│   ├── 📁 services/                # Business logic
+│   ├── 📁 store/                   # Redux store
+│   ├── 📁 hooks/                   # Custom hooks
+│   └── 📁 __tests__/               # Test files
+├── 📁 docs/                        # Documentation
+│   ├── 📁 implementation/          # Feature docs
+│   └── 📁 setup/                   # Setup guides
+├── 📁 scripts/                     # Build scripts
+└── 📁 demo/                        # Demo files
 ```
 
 ## Development Setup
@@ -28,18 +53,37 @@ src/
 - iOS Simulator (for iOS development)
 - Android Studio (for Android development)
 
-### Installation
+### Quick Installation
 
 1. Clone the repository
 2. Install dependencies:
    ```bash
-   npm install
+   npm install --legacy-peer-deps
    ```
 
 3. Start the development server:
    ```bash
-   npm start
+   npm run web
    ```
+
+### Alternative Setup Methods
+
+**Windows Users:**
+```bash
+# Quick start script
+./quick-start.bat
+```
+
+**PowerShell Users:**
+```bash
+# PowerShell script
+./quick-start.ps1
+```
+
+**Having Issues?**
+- 🛠️ Check [SETUP_TESTING_GUIDE.html](docs/SETUP_TESTING_GUIDE.html) for step-by-step setup
+- 🔧 Use [setup-checker.html](docs/setup/setup-checker.html) to validate your environment
+- 📖 Follow [MANUAL_SETUP.md](docs/setup/MANUAL_SETUP.md) for detailed instructions
 
 ### Available Scripts
 

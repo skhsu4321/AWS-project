@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Farm Simulator - Setup & Testing Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4a7c59;
+        }
+        .language-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #4a7c59;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .language-switch:hover {
+            background: #5a8a67;
+        }
+        h1 {
+            color: #2c5530;
+            font-size: 2.5em;
+            margin: 0;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin: 10px 0 0 0;
+        }
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+        .nav-tab {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px 10px;
+            text-align: center;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            color: #666;
+        }
+        .nav-tab.active {
+            background: #4a7c59;
+            color: white;
+        }
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+        .nav-tab.active:hover {
+            background: #5a8a67;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .step {
+            background: #f8f9fa;
+            border-left: 4px solid #4a7c59;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .step h4 {
+            color: #4a7c59;
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        .command {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+            white-space: pre-line;
+            line-height: 1.8;
+        }
+        .command strong {
+            color: #ffd700;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .command ul {
+            margin: 8px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+        .command li {
+            margin: 4px 0;
+            padding-left: 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .platform-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .platform-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .platform-card h4 {
+            color: #4a7c59;
+            margin: 0 0 10px 0;
+        }
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .checklist h4 {
+            color: #4a7c59;
+            margin-top: 0;
+        }
+        .checklist ul {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+        .checklist li::before {
+            content: "☐ ";
+            color: #4a7c59;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .troubleshoot {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .troubleshoot h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button class="language-switch" onclick="toggleLanguage()">
+        <span id="lang-btn-text">中文</span>
+    </button>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="main-title">🛠️ Setup & Testing Guide</h1>
+            <p class="subtitle" id="main-subtitle">Step-by-step instructions for beginners</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('quick-start')" id="tab-quick-start">Quick Start</button>
+            <button class="nav-tab" onclick="showTab('detailed-setup')" id="tab-detailed-setup">Detailed Setup</button>
+            <button class="nav-tab" onclick="showTab('web-testing')" id="tab-web-testing">Web Testing</button>
+            <button class="nav-tab" onclick="showTab('functional-testing')" id="tab-functional-testing">Function Testing</button>
+            <button class="nav-tab" onclick="showTab('mobile-testing')" id="tab-mobile-testing">Mobile Testing</button>
+            <button class="nav-tab" onclick="showTab('troubleshooting')" id="tab-troubleshooting">Troubleshooting</button>
+        </div>
+
+        <!-- Quick Start Tab -->
+        <div id="quick-start" class="tab-content active">
+            <div class="success">
+                <h3 id="fastest-way-title">🚀 Fastest Way to Test the App</h3>
+                <p id="fastest-way-desc">Follow these 3 simple steps to get the app running in your web browser:</p>
+            </div>
+
+            <div class="step">
+                <h4 id="step1-title">Step 1: Double-click quick-start.bat</h4>
+                <p id="step1-desc">In your FinanceFarmSimulator folder, find and double-click <code>quick-start.bat</code></p>
+                <div class="info">
+                    <p id="step1-note"><strong>💡 If the window disappears quickly:</strong> The script is working! It will automatically open your browser and text editor with helpful files.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="step2-title">Step 2: Choose Option 1 (Web Browser)</h4>
+                <p id="step2-desc">When the script asks for your choice, type <code>1</code> and press Enter to start the web version.</p>
+                <div class="command">
+Choose how to start your app:
+1. Web Browser (Recommended for first time)
+2. Run Tests First  
+3. Android Emulator
+4. View Interactive Demo
+5. Check Project Status
+
+Enter your choice (1-5): 1
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="step3-title">Step 3: Open Your Browser</h4>
+                <p id="step3-desc">The app will automatically open at <code>http://localhost:19006</code> in your default browser.</p>
+                <div class="success">
+                    <p id="step3-success">🎉 <strong>Success!</strong> You should now see the Finance Farm Simulator running in your browser!</p>
+                </div>
+            </div>
+
+            <div class="warning">
+                <h4 id="no-nodejs-title">❌ Don't have Node.js installed?</h4>
+                <p id="no-nodejs-desc">If you see an error about Node.js not being found:</p>
+                <ol id="no-nodejs-steps">
+                    <li>The script will automatically open <code>install-nodejs.html</code> in your browser</li>
+                    <li>Follow the instructions to download and install Node.js</li>
+                    <li>Restart your computer</li>
+                    <li>Run <code>quick-start.bat</code> again</li>
+                </ol>
+            </div>
+
+            <div class="checklist">
+                <h4 id="quick-checklist-title">✅ Quick Success Checklist</h4>
+                <div id="quick-checklist">
+                    <div>☐ Node.js is installed (version 16 or higher)</div>
+                    <div>☐ You're in the FinanceFarmSimulator folder</div>
+                    <div>☐ You ran quick-start.bat and chose option 1</div>
+                    <div>☐ Your browser opened to http://localhost:8081</div>
+                    <div>☐ You can see the Finance Farm Simulator interface</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Setup Tab -->
+        <div id="detailed-setup" class="tab-content">
+            <h3 id="detailed-title">📋 Detailed Setup Instructions</h3>
+            <p id="detailed-desc">For those who want to understand each step or need manual installation:</p>
+
+            <div class="step">
+                <h4 id="install-nodejs-title">1. Install Node.js</h4>
+                <p id="install-nodejs-desc">Node.js is required to run the development server.</p>
+                <ol id="install-nodejs-steps">
+                    <li>Go to <a href="https://nodejs.org/" target="_blank">https://nodejs.org/</a></li>
+                    <li>Download the LTS version (left button, recommended)</li>
+                    <li>Run the installer and follow the setup wizard</li>
+                    <li>Restart your computer after installation</li>
+                </ol>
+                <div class="command">
+# Verify installation by opening Command Prompt and typing:
+node --version
+npm --version
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="navigate-folder-title">2. Navigate to Project Folder</h4>
+                <p id="navigate-folder-desc">Open Command Prompt and navigate to your project:</p>
+                <div class="command">
+# Replace with your actual path
+cd C:\Users\YourName\Documents\FinanceFarmSimulator
+                </div>
+                <div class="info">
+                    <p id="navigate-tip"><strong>💡 Tip:</strong> You can also Shift+Right-click in the folder and select "Open PowerShell window here"</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="install-deps-title">3. Install Dependencies</h4>
+                <p id="install-deps-desc">Install all required packages (this may take 2-5 minutes):</p>
+                <div class="command">
+npm install --legacy-peer-deps
+                </div>
+                <div class="warning">
+                    <p id="legacy-peer-deps-note"><strong>⚠️ Important:</strong> The <code>--legacy-peer-deps</code> flag is required to resolve version conflicts between React Native and Expo Router.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="start-dev-server-title">4. Start Development Server</h4>
+                <p id="start-dev-server-desc">Start the app in web mode:</p>
+                <div class="command">
+npm run web
+                </div>
+                <p id="server-note">The development server will start and automatically open your browser to <code>http://localhost:19006</code></p>
+            </div>
+
+            <div class="step">
+                <h4 id="verify-installation-title">5. Verify Installation</h4>
+                <p id="verify-installation-desc">You should see:</p>
+                <ul id="verify-list">
+                    <li>The Finance Farm Simulator login screen</li>
+                    <li>No error messages in the browser console</li>
+                    <li>Smooth animations and interactions</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Web Testing Tab -->
+        <div id="web-testing" class="tab-content">
+            <h3 id="web-testing-title">🌐 Web Browser Testing</h3>
+            <p id="web-testing-desc">The easiest way to test the app is in your web browser:</p>
+
+            <div class="step">
+                <h4 id="start-web-title">Starting Web Version</h4>
+                <div class="command">
+# Method 1: Use the quick start script
+./quick-start.bat
+# Choose option 1
+
+# Method 2: Direct command
+npm run web
+
+# Method 3: Alternative start
+npx expo start --web
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="web-features-title">What You Can Test in Web Browser</h4>
+                <ul id="web-features-list">
+                    <li><strong>✅ User Interface:</strong> All screens and components</li>
+                    <li><strong>✅ Navigation:</strong> Moving between different screens</li>
+                    <li><strong>✅ Forms:</strong> Adding income, expenses, and goals</li>
+                    <li><strong>✅ Animations:</strong> Farm growth and micro-interactions</li>
+                    <li><strong>✅ Data Storage:</strong> Local storage functionality</li>
+                    <li><strong>❌ Camera:</strong> Receipt scanning won't work</li>
+                    <li><strong>❌ Push Notifications:</strong> Not available in web</li>
+                    <li><strong>❌ Device Features:</strong> Haptic feedback, etc.</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <h4 id="web-testing-steps-title">Testing Steps</h4>
+                <ol id="web-testing-steps">
+                    <li><strong>Login/Register:</strong> Create a test account</li>
+                    <li><strong>Farm View:</strong> Check if the farm canvas loads</li>
+                    <li><strong>Add Income:</strong> Test the income logging feature</li>
+                    <li><strong>Add Expense:</strong> Test expense tracking</li>
+                    <li><strong>Set Goals:</strong> Create a savings goal</li>
+                    <li><strong>View Analytics:</strong> Check reports and charts</li>
+                    <li><strong>Child Mode:</strong> Switch to child-friendly interface</li>
+                </ol>
+            </div>
+
+            <div class="info">
+                <h4 id="web-limitations-title">⚠️ Current Web Testing Limitations</h4>
+                <p id="web-limitations-desc">The current web version shows a <strong>demo interface</strong> with button responses. Here's what's available:</p>
+                
+                <div class="command">
+<strong>✅ Currently Available in Web:</strong>
+
+• App interface and layout
+• Button click responses
+• Status message updates
+• Basic navigation structure
+• Responsive design testing
+
+<strong>❌ Not Yet Available in Web:</strong>
+
+• Data input forms (income/expense entry)
+• Farm animations and interactions
+• Transaction processing
+• Database storage
+• Full app functionality
+
+<strong>🔄 This is Normal!</strong>
+
+The web version currently shows a "proof of concept" demo.
+For full functionality testing, use:
+• Mobile devices with Expo Go
+• Android/iOS emulators
+• Development builds
+                </div>
+            </div>
+
+            <div class="success">
+                <h4 id="web-demo-title">🎮 Interactive Demo</h4>
+                <p id="web-demo-desc">You can also view a static demo without installing anything:</p>
+                <div class="command">
+# Open this file in your browser:
+demo/index.html
+                </div>
+            </div>
+        </div>
+
+        <!-- Functional Testing Tab -->
+        <div id="functional-testing" class="tab-content">
+            <h3 id="functional-testing-title">🧪 Complete Function Testing Guide</h3>
+            <p id="functional-testing-desc">Test all app features with dummy data and expected results:</p>
+
+            <div class="step">
+                <h4 id="auth-testing-title">🔐 Authentication Testing</h4>
+                
+                <h5 id="register-test-title">Registration Test</h5>
+                <p id="register-test-desc">Test user registration with these dummy accounts:</p>
+                
+                <div class="command">
+<strong>📝 Test Data:</strong>
+
+• Email: testuser@example.com
+• Password: TestPass123!
+• Confirm Password: TestPass123!
+• Age: 25 (Adult Mode)
+
+<strong>✅ Expected Result:</strong>
+
+✅ Account created successfully
+✅ Redirected to main farm screen
+✅ Welcome message displayed
+                </div>
+
+                <h5 id="login-test-title">Login Test</h5>
+                
+                <div class="command">
+<strong>📝 Test Data:</strong>
+
+• Email: testuser@example.com
+• Password: TestPass123!
+
+<strong>✅ Expected Result:</strong>
+
+✅ Login successful
+✅ Farm screen loads with user data
+✅ Navigation menu accessible
+                </div>
+
+                <h5 id="child-mode-test-title">Child Mode Test</h5>
+                
+                <div class="command">
+<strong>📝 Test Data:</strong>
+
+• Email: child@example.com
+• Password: ChildPass123!
+• Age: 8 (Child Mode)
+
+<strong>✅ Expected Result:</strong>
+
+✅ Simplified interface loads
+✅ Educational tooltips appear
+✅ Parental approval banner shows
+✅ Math helpers available
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="income-testing-title">💰 Income Logging Testing</h4>
+                <h5 id="income-entry-test-title">Income Entry Test</h5>
+                
+                <div class="command">
+<strong>📝 Test Data:</strong>
+
+• Amount: $500
+• Source: Salary
+• Category: Job
+• Date: Today
+• Notes: Weekly paycheck
+
+<strong>✅ Expected Result:</strong>
+
+✅ Income added to list
+✅ Farm gets fertilizer animation
+✅ Crops grow slightly
+✅ Total income updates
+✅ Income streak counter increases
+                </div>
+
+                <h5 id="recurring-income-test-title">Recurring Income Test</h5>
+                
+                <div class="command">
+<strong>📝 Test Data:</strong>
+
+• Amount: $2000
+• Source: Monthly Salary
+• Frequency: Monthly
+• Start Date: 1st of current month
+
+<strong>✅ Expected Result:</strong>
+
+✅ Recurring income scheduled
+✅ Next payment date calculated
+✅ Automatic reminders set
+✅ Farm shows consistent growth pattern
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="expense-testing-title">📊 Expense Tracking Testing</h4>
+                <h5 id="expense-entry-test-title">Expense Entry Test</h5>
+                
+                <div class="command">
+<strong>📝 Test Data:</strong>
+
+• Amount: $50
+• Category: Groceries
+• Merchant: Local Store
+• Date: Today
+• Payment Method: Credit Card
+
+<strong>✅ Expected Result:</strong>
+
+✅ Expense added to list
+✅ Weed appears in farm
+✅ Budget tracking updates
+✅ Category spending increases
+✅ Weed-pulling animation available
+                </div>
+
+                <h5 id="budget-alert-test-title">Budget Alert Test</h5>
+                
+                <div class="command">
+<strong>📝 Test Data:</strong>
+
+• Set Budget: $200 for Groceries
+• Add Expenses: $180 (90% of budget)
+
+<strong>✅ Expected Result:</strong>
+
+✅ Warning alert appears at 90%
+✅ Red alert at 100%
+✅ Farm shows more weeds
+✅ Recommendations displayed
+                </div>
+
+                <h5 id="receipt-scan-test-title">Receipt Scanning Test</h5>
+                
+                <div class="command">
+<strong>📝 Test Data:</strong>
+
+• Upload: Sample receipt image
+• Expected Items: Milk $3.50, Bread $2.25
+
+<strong>✅ Expected Result:</strong>
+
+✅ OCR processes receipt
+✅ Items automatically detected
+✅ Categories suggested
+✅ Manual editing available
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="goals-testing-title">🎯 Goal Management Testing</h4>
+                <h5 id="goal-creation-test-title">Goal Creation Test</h5>
+                
+                <div class="command">
+<strong>📝 Test Data:</strong>
+
+• Goal Name: Emergency Fund
+• Target Amount: $1000
+• Current Amount: $0
+• Deadline: 6 months from now
+• Priority: High
+
+<strong>✅ Expected Result:</strong>
+
+✅ Goal created successfully
+✅ New crop appears in farm
+✅ Progress bar shows 0%
+✅ Deadline countdown starts
+                </div>
+
+                <h5 id="goal-progress-test-title">Goal Progress Test</h5>
+                
+                <div class="command">
+<strong>📝 Test Data:</strong>
+
+• Add Progress: $250 to Emergency Fund
+
+<strong>✅ Expected Result:</strong>
+
+✅ Progress bar updates to 25%
+✅ Crop grows visibly
+✅ Achievement notification
+✅ Motivational message displayed
+                </div>
+
+                <h5 id="goal-completion-test-title">Goal Completion Test</h5>
+                
+                <div class="command">
+<strong>📝 Test Data:</strong>
+
+• Complete Goal: Add final $750 to reach $1000
+
+<strong>✅ Expected Result:</strong>
+
+✅ Goal marked as completed
+✅ Harvest animation plays
+✅ Celebration screen appears
+✅ New farm area unlocked
+✅ Achievement badge earned
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="farm-testing-title">🌾 Farm Visualization Testing</h4>
+                <h5 id="farm-interaction-test-title">Farm Interaction Test</h5>
+                <div class="command">
+Test Actions:
+1. Tap on crops to see details
+2. Water crops (add income)
+3. Pull weeds (categorize expenses)
+4. Harvest completed goals
+
+Expected Result:
+✅ Smooth animations
+✅ Interactive elements respond
+✅ Visual feedback for actions
+✅ Farm state persists between sessions
+                </div>
+
+                <h5 id="farm-growth-test-title">Farm Growth Test</h5>
+                <div class="command">
+Test Scenario:
+Day 1: Add $100 income, $50 expenses
+Day 2: Add $200 income, $75 expenses
+Day 3: Complete a $500 goal
+
+Expected Result:
+✅ Crops grow progressively
+✅ Weeds appear and can be removed
+✅ Farm expands with achievements
+✅ Visual progress matches financial data
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="analytics-testing-title">📈 Analytics Testing</h4>
+                <h5 id="reports-test-title">Financial Reports Test</h5>
+                <div class="command">
+Test Data:
+Time Period: Last 30 days
+Income: $2000
+Expenses: $1500
+Goals: 2 active, 1 completed
+
+Expected Result:
+✅ Charts display correctly
+✅ Income vs expenses comparison
+✅ Category breakdowns accurate
+✅ Trends and insights shown
+✅ Export functionality works
+                </div>
+
+                <h5 id="insights-test-title">Spending Insights Test</h5>
+                <div class="command">
+Expected Insights:
+- Top spending category
+- Unusual spending patterns
+- Budget recommendations
+- Savings opportunities
+
+Expected Result:
+✅ Personalized insights generated
+✅ Actionable recommendations
+✅ Visual spending patterns
+✅ Comparison with previous periods
+                </div>
+            </div>
+
+            <div class="step">
+                <h4 id="child-features-testing-title">👶 Child Mode Features Testing</h4>
+                <h5 id="chores-test-title">Chores System Test</h5>
+                <div class="command">
+Test Data:
+Chore: Clean Room
+Reward: $5
+Difficulty: Easy
+Due Date: Tomorrow
+
+Expected Result:
+✅ Chore appears in child's list
+✅ Simple completion interface
+✅ Reward calculation shown
+✅ Parent approval required
+✅ Educational content displayed
+                </div>
+
+                <h5 id="math-helper-test-title">Math Helper Test</h5>
+                <div class="command">
+Test Scenario:
+Child wants to buy $15 toy
+Current savings: $8
+Weekly allowance: $3
+
+Expected Result:
+✅ Math helper calculates: Need $7 more
+✅ Shows: 3 weeks to save enough
+✅ Visual progress bar
+✅ Encouragement messages
+                </div>
+            </div>
+
+            <div class="success">
+                <h4 id="testing-checklist-title">✅ Complete Testing Checklist</h4>
+                <div id="testing-checklist">
+                    <div>☐ User registration and login work</div>
+                    <div>☐ Income logging with animations</div>
+                    <div>☐ Expense tracking with categories</div>
+                    <div>☐ Goal creation and progress tracking</div>
+                    <div>☐ Farm visualization responds to actions</div>
+                    <div>☐ Analytics and reports display correctly</div>
+                    <div>☐ Child mode features function properly</div>
+                    <div>☐ Data persists between sessions</div>
+                    <div>☐ All animations play smoothly</div>
+                    <div>☐ Navigation works on all screens</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Testing Tab -->
+        <div id="mobile-testing" class="tab-content">
+            <h3 id="mobile-testing-title">📱 Mobile Device Testing</h3>
+            <p id="mobile-testing-desc">Complete guide for testing on real devices and emulators:</p>
+
+            <div class="info">
+                <h4 id="mobile-overview-title">📋 Mobile Testing Overview</h4>
+                <p id="mobile-overview-desc">The Finance Farm Simulator is designed for mobile devices. Choose your testing method:</p>
+            </div>
+
+            <div class="nav-tabs" style="margin-top: 20px;">
+                <button class="nav-tab active" onclick="showMobileTab('android')" id="mobile-tab-android">🤖 Android</button>
+                <button class="nav-tab" onclick="showMobileTab('ios')" id="mobile-tab-ios">🍎 iOS</button>
+                <button class="nav-tab" onclick="showMobileTab('expo-go')" id="mobile-tab-expo-go">📱 Expo Go</button>
+            </div>
+
+            <!-- Android Sub-tab -->
+            <div id="android" class="tab-content active" style="margin-top: 20px;">
+
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <span class="platform-icon">🤖</span>
+                    <h4 id="android-title">Android Testing</h4>
+                    <p id="android-desc">Test on Android devices or emulator</p>
+                </div>
+                <div class="platform-card">
+                    <span class="platform-icon">🍎</span>
+                    <h4 id="ios-title">iOS Testing</h4>
+                    <p id="ios-desc">Test on iPhone/iPad or iOS Simulator</p>
+                </div>
+                <div class="platform-card">
+                    <span class="platform-icon">📱</span>
+                    <h4 id="expo-go-title">Expo Go App</h4>
+                    <p id="expo-go-desc">Quick testing with Expo Go mobile app</p>
+                </div>
+            </div>
+
+                <h4 id="android-setup-title">🤖 Android Testing - Complete Guide</h4>
+                
+                <h5 id="android-emulator-title">Option 1: Android Emulator (Recommended for Beginners)</h5>
+                
+                <div class="command">
+<strong>📥 Download & Install:</strong>
+
+1. Go to https://developer.android.com/studio
+2. Download Android Studio (free)
+3. Install with default settings
+4. Launch Android Studio
+
+<strong>🔧 Setup Emulator:</strong>
+
+1. Open Android Studio
+2. Click "More Actions" → "Virtual Device Manager"
+3. Click "Create Device"
+4. Choose "Pixel 4" or "Pixel 6" (recommended)
+5. Download system image (API 30 or higher)
+6. Click "Finish"
+
+<strong>🚀 Start Testing:</strong>
+
+1. Click ▶️ button next to your virtual device
+2. Wait for emulator to boot (2-3 minutes first time)
+3. In your project folder, run: npm run android
+4. App should install and open automatically
+                </div>
+
+                <h5 id="android-device-title">Option 2: Real Android Device</h5>
+                
+                <div class="command">
+<strong>📱 Enable Developer Mode:</strong>
+
+1. Open Settings on your Android phone
+2. Go to "About phone" or "About device"
+3. Tap "Build number" 7 times rapidly
+4. You'll see "Developer mode enabled"
+
+<strong>🔧 Enable USB Debugging:</strong>
+
+1. Go back to main Settings
+2. Find "Developer options" (usually in System)
+3. Turn on "USB debugging"
+4. Turn on "Install via USB"
+
+<strong>🔌 Connect & Test:</strong>
+
+1. Connect phone to computer with USB cable
+2. Allow USB debugging when prompted on phone
+3. In command prompt, run: adb devices
+4. You should see your device listed
+5. Run: npm run android
+6. App installs and opens on your phone
+                </div>
+            </div>
+
+            <!-- iOS Sub-tab -->
+            <div id="ios" class="tab-content" style="margin-top: 20px;">
+
+                <h4 id="ios-setup-title">🍎 iOS Testing - Complete Guide (Mac Only)</h4>
+                
+                <h5 id="ios-simulator-title">Option 1: iOS Simulator</h5>
+                
+                <div class="command">
+<strong>📥 Install Xcode:</strong>
+
+1. Open Mac App Store
+2. Search for "Xcode"
+3. Click "Get" (it's free but large ~10GB)
+4. Wait for download and installation
+
+<strong>🔧 Setup Simulator:</strong>
+
+1. Open Xcode
+2. Go to Xcode → Preferences → Components
+3. Download iOS Simulator if not installed
+4. Close Xcode
+
+<strong>🚀 Start Testing:</strong>
+
+1. In your project folder, run: npm run ios
+2. iOS Simulator will open automatically
+3. App installs and launches in simulator
+4. Test all features like a real iPhone
+                </div>
+
+                <h5 id="ios-device-title">Option 2: Real iPhone/iPad</h5>
+                
+                <div class="command">
+<strong>🔌 Connect Device:</strong>
+
+1. Connect iPhone/iPad to Mac with USB cable
+2. Unlock your device
+3. Tap "Trust This Computer" when prompted
+4. Enter your device passcode
+
+<strong>⚠️ Developer Account Required:</strong>
+
+For real device testing, you need:
+• Apple Developer Account ($99/year)
+• OR use Expo Go app (free, see Expo Go tab)
+
+<strong>🚀 With Developer Account:</strong>
+
+1. Run: npm run ios
+2. Select your device when prompted
+3. App installs on your device
+4. May need to trust developer in Settings
+                </div>
+            </div>
+
+            <!-- Expo Go Sub-tab -->
+            <div id="expo-go" class="tab-content" style="margin-top: 20px;">
+
+                <h4 id="expo-go-setup-title">📱 Expo Go Testing (Easiest Mobile Testing)</h4>
+                
+                <p id="expo-go-desc-detail">Expo Go is a free mobile app that lets you test React Native apps instantly:</p>
+                
+                <div class="command">
+<strong>📥 Install Expo Go App:</strong>
+
+• iPhone/iPad: Download from App Store
+• Android: Download from Google Play Store
+• Search for "Expo Go" (official app by Expo)
+
+<strong>🌐 Setup Network:</strong>
+
+• Make sure your phone and computer are on the SAME WiFi network
+• This is very important - they must be connected to the same router
+
+<strong>🚀 Start Testing:</strong>
+
+1. In your project folder, run: npx expo start
+2. A QR code will appear in your terminal
+3. Open Expo Go app on your phone
+4. Tap "Scan QR Code"
+5. Point camera at the QR code on your computer
+6. App loads directly on your phone!
+
+<strong>📱 What Works in Expo Go:</strong>
+
+✅ All UI components and navigation
+✅ Basic animations and interactions  
+✅ Form inputs and data entry
+✅ Most app functionality
+
+❌ Camera features (receipt scanning)
+❌ Push notifications
+❌ Some native device features
+                </div>
+                
+                <div class="warning">
+                    <p id="expo-go-warning"><strong>💡 Pro Tip:</strong> Expo Go is perfect for testing the core app functionality. For full features like camera scanning, use development builds.</p>
+                </div>
+            </div>
+        </div>
+
+            <div class="step">
+                <h4 id="dev-build-title">🔧 Development Builds (Recommended)</h4>
+                <p id="dev-build-desc">For full feature testing, create development builds:</p>
+                <div class="command">
+# Install EAS CLI
+npm install -g @expo/eas-cli
+
+# Login to Expo account
+eas login
+
+# Build for development
+eas build --profile development --platform android
+eas build --profile development --platform ios
+                </div>
+            </div>
+        </div>
+
+        <!-- Troubleshooting Tab -->
+        <div id="troubleshooting" class="tab-content">
+            <h3 id="troubleshooting-title">🔧 Troubleshooting</h3>
+            <p id="troubleshooting-desc">Common issues and solutions:</p>
+
+            <div class="troubleshoot">
+                <h4 id="issue1-title">❌ "Node.js is not recognized"</h4>
+                <p id="issue1-desc"><strong>Problem:</strong> Command prompt says Node.js is not found</p>
+                <p id="issue1-solution"><strong>Solution:</strong></p>
+                <ol id="issue1-steps">
+                    <li>Download Node.js from <a href="https://nodejs.org/" target="_blank">nodejs.org</a></li>
+                    <li>Install the LTS version</li>
+                    <li>Restart your computer completely</li>
+                    <li>Open a new Command Prompt window</li>
+                </ol>
+            </div>
+
+            <div class="troubleshoot">
+                <h4 id="issue2-title">❌ "npm install" fails</h4>
+                <p id="issue2-desc"><strong>Problem:</strong> Dependency installation errors</p>
+                <p id="issue2-solution"><strong>Solution:</strong></p>
+                <div class="command">
+# Clear npm cache
+npm cache clean --force
+
+# Delete node_modules and package-lock.json
+rmdir /s node_modules
+del package-lock.json
+
+# Reinstall with legacy peer deps
+npm install --legacy-peer-deps
+                </div>
+            </div>
+
+            <div class="troubleshoot">
+                <h4 id="issue3-title">❌ Quick-start.bat window disappears</h4>
+                <p id="issue3-desc"><strong>Problem:</strong> The batch file window closes immediately</p>
+                <p id="issue3-solution"><strong>Solution:</strong></p>
+                <ol id="issue3-steps">
+                    <li>This is normal! The script opens files automatically</li>
+                    <li>Check if browser windows opened with setup guides</li>
+                    <li>If nothing opened, right-click the .bat file → "Run as administrator"</li>
+                    <li>Or open Command Prompt manually and run the commands</li>
+                </ol>
+            </div>
+
+            <div class="troubleshoot">
+                <h4 id="issue4-title">❌ "Port 19006 is already in use"</h4>
+                <p id="issue4-desc"><strong>Problem:</strong> Development server can't start</p>
+                <p id="issue4-solution"><strong>Solution:</strong></p>
+                <div class="command">
+# Kill existing processes
+taskkill /f /im node.exe
+
+# Or use a different port
+npx expo start --web --port 19007
+                </div>
+            </div>
+
+            <div class="troubleshoot">
+                <h4 id="issue5-title">❌ App shows blank screen</h4>
+                <p id="issue5-desc"><strong>Problem:</strong> Browser shows empty page</p>
+                <p id="issue5-solution"><strong>Solution:</strong></p>
+                <ol id="issue5-steps">
+                    <li>Open browser developer tools (F12)</li>
+                    <li>Check Console tab for error messages</li>
+                    <li>Try refreshing the page (Ctrl+F5)</li>
+                    <li>Clear browser cache and cookies</li>
+                    <li>Try a different browser (Chrome recommended)</li>
+                </ol>
+            </div>
+
+            <div class="step">
+                <h4 id="validation-tools-title">🛠️ Validation Tools</h4>
+                <p id="validation-tools-desc">Use these tools to check your setup:</p>
+                <ul id="validation-tools-list">
+                    <li><strong>setup-checker.html:</strong> Browser-based environment checker</li>
+                    <li><strong>scripts/quickTest.js:</strong> Automated project validation</li>
+                    <li><strong>npm run test:</strong> Run all tests to verify functionality</li>
+                </ul>
+                <div class="command">
+# Run project validation
+node scripts/quickTest.js
+
+# Run tests
+npm test
+
+# Check project status
+npm run build
+                </div>
+            </div>
+
+            <div class="info">
+                <h4 id="get-help-title">🆘 Still Need Help?</h4>
+                <p id="get-help-desc">If you're still having issues:</p>
+                <ol id="get-help-steps">
+                    <li>Check the <code>docs/setup/</code> folder for more detailed guides</li>
+                    <li>Open <code>setup-checker.html</code> to validate your environment</li>
+                    <li>Try the interactive demo in <code>demo/index.html</code></li>
+                    <li>Review the error messages carefully - they often contain the solution</li>
+                </ol>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+            <h3 id="success-title" style="color: #4a7c59; margin-top: 0;">🎉 Ready to Explore!</h3>
+            <p id="success-desc">Once you have the app running, check out the <strong>App Overview Guide</strong> to learn about all the features!</p>
+            <a href="APP_OVERVIEW_GUIDE.html" style="background: #4a7c59; color: white; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px;">
+                <span id="overview-guide-btn">View App Overview</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'en';
+        
+        const translations = {
+            en: {
+                'lang-btn-text': '中文',
+                'main-title': '🛠️ Setup & Testing Guide',
+                'main-subtitle': 'Step-by-step instructions for beginners',
+                'tab-quick-start': 'Quick Start',
+                'tab-detailed-setup': 'Detailed Setup',
+                'tab-web-testing': 'Web Testing',
+                'tab-functional-testing': 'Function Testing',
+                'tab-mobile-testing': 'Mobile Testing',
+                'tab-troubleshooting': 'Troubleshooting',
+                'fastest-way-title': '🚀 Fastest Way to Test the App',
+                'fastest-way-desc': 'Follow these 3 simple steps to get the app running in your web browser:',
+                'step1-title': 'Step 1: Double-click quick-start.bat',
+                'step1-desc': 'In your FinanceFarmSimulator folder, find and double-click quick-start.bat',
+                'step1-note': '💡 If the window disappears quickly: The script is working! It will automatically open your browser and text editor with helpful files.',
+                'step2-title': 'Step 2: Choose Option 1 (Web Browser)',
+                'step2-desc': 'When the script asks for your choice, type 1 and press Enter to start the web version.',
+                'step3-title': 'Step 3: Open Your Browser',
+                'step3-desc': 'The app will automatically open at http://localhost:19006 in your default browser.',
+                'step3-success': '🎉 Success! You should now see the Finance Farm Simulator running in your browser!',
+                'no-nodejs-title': '❌ Don\'t have Node.js installed?',
+                'no-nodejs-desc': 'If you see an error about Node.js not being found:',
+                'no-nodejs-steps': '<li>The script will automatically open install-nodejs.html in your browser</li><li>Follow the instructions to download and install Node.js</li><li>Restart your computer</li><li>Run quick-start.bat again</li>',
+                'quick-checklist-title': '✅ Quick Success Checklist',
+                'quick-checklist': '<li>Node.js is installed (version 16 or higher)</li><li>You\'re in the FinanceFarmSimulator folder</li><li>You ran quick-start.bat and chose option 1</li><li>Your browser opened to http://localhost:19006</li><li>You can see the Finance Farm Simulator interface</li>',
+                'detailed-title': '📋 Detailed Setup Instructions',
+                'detailed-desc': 'For those who want to understand each step or need manual installation:',
+                'install-nodejs-title': '1. Install Node.js',
+                'install-nodejs-desc': 'Node.js is required to run the development server.',
+                'install-nodejs-steps': '<li>Go to <a href="https://nodejs.org/" target="_blank">https://nodejs.org/</a></li><li>Download the LTS version (left button, recommended)</li><li>Run the installer and follow the setup wizard</li><li>Restart your computer after installation</li>',
+                'navigate-folder-title': '2. Navigate to Project Folder',
+                'navigate-folder-desc': 'Open Command Prompt and navigate to your project:',
+                'navigate-tip': '💡 Tip: You can also Shift+Right-click in the folder and select "Open PowerShell window here"',
+                'install-deps-title': '3. Install Dependencies',
+                'install-deps-desc': 'Install all required packages (this may take 2-5 minutes):',
+                'legacy-peer-deps-note': '⚠️ Important: The --legacy-peer-deps flag is required to resolve version conflicts between React Native and Expo Router.',
+                'start-dev-server-title': '4. Start Development Server',
+                'start-dev-server-desc': 'Start the app in web mode:',
+                'server-note': 'The development server will start and automatically open your browser to http://localhost:19006',
+                'verify-installation-title': '5. Verify Installation',
+                'verify-installation-desc': 'You should see:',
+                'verify-list': '<li>The Finance Farm Simulator login screen</li><li>No error messages in the browser console</li><li>Smooth animations and interactions</li>',
+                'web-testing-title': '🌐 Web Browser Testing',
+                'web-testing-desc': 'The easiest way to test the app is in your web browser:',
+                'start-web-title': 'Starting Web Version',
+                'web-features-title': 'What You Can Test in Web Browser',
+                'web-features-list': '<li><strong>✅ User Interface:</strong> All screens and components</li><li><strong>✅ Navigation:</strong> Moving between different screens</li><li><strong>✅ Forms:</strong> Adding income, expenses, and goals</li><li><strong>✅ Animations:</strong> Farm growth and micro-interactions</li><li><strong>✅ Data Storage:</strong> Local storage functionality</li><li><strong>❌ Camera:</strong> Receipt scanning won\'t work</li><li><strong>❌ Push Notifications:</strong> Not available in web</li><li><strong>❌ Device Features:</strong> Haptic feedback, etc.</li>',
+                'web-testing-steps-title': 'Testing Steps',
+                'web-testing-steps': '<li><strong>Login/Register:</strong> Create a test account</li><li><strong>Farm View:</strong> Check if the farm canvas loads</li><li><strong>Add Income:</strong> Test the income logging feature</li><li><strong>Add Expense:</strong> Test expense tracking</li><li><strong>Set Goals:</strong> Create a savings goal</li><li><strong>View Analytics:</strong> Check reports and charts</li><li><strong>Child Mode:</strong> Switch to child-friendly interface</li>',
+                'web-demo-title': '🎮 Interactive Demo',
+                'web-demo-desc': 'You can also view a static demo without installing anything:',
+                'mobile-testing-title': '📱 Mobile Device Testing',
+                'mobile-testing-desc': 'Test the app on real devices or emulators:',
+                'android-title': 'Android Testing',
+                'android-desc': 'Test on Android devices or emulator',
+                'ios-title': 'iOS Testing',
+                'ios-desc': 'Test on iPhone/iPad or iOS Simulator',
+                'expo-go-title': 'Expo Go App',
+                'expo-go-desc': 'Quick testing with Expo Go mobile app',
+                'android-setup-title': '🤖 Android Setup',
+                'android-emulator-title': 'Option 1: Android Emulator',
+                'android-emulator-steps': '<li>Install <a href="https://developer.android.com/studio" target="_blank">Android Studio</a></li><li>Open Android Studio → Tools → AVD Manager</li><li>Create a new virtual device (Pixel 4 recommended)</li><li>Start the emulator</li><li>Run: npm run android</li>',
+                'android-device-title': 'Option 2: Real Android Device',
+                'android-device-steps': '<li>Enable Developer Options on your Android device</li><li>Enable USB Debugging</li><li>Connect device via USB</li><li>Run: adb devices to verify connection</li><li>Run: npm run android</li>',
+                'ios-setup-title': '🍎 iOS Setup (Mac Only)',
+                'ios-simulator-title': 'Option 1: iOS Simulator',
+                'ios-simulator-steps': '<li>Install Xcode from Mac App Store</li><li>Open Xcode → Preferences → Components</li><li>Install iOS Simulator</li><li>Run: npm run ios</li>',
+                'ios-device-title': 'Option 2: Real iOS Device',
+                'ios-device-steps': '<li>Connect iPhone/iPad via USB</li><li>Trust the computer on your device</li><li>Run: npm run ios</li><li>May require Apple Developer account for device testing</li>',
+                'expo-go-setup-title': '📱 Expo Go Testing',
+                'expo-go-desc-detail': 'Expo Go is a mobile app that lets you test React Native apps quickly:',
+                'expo-go-steps': '<li>Install Expo Go from App Store (iOS) or Google Play (Android)</li><li>Make sure your phone and computer are on the same WiFi</li><li>Run: npx expo start</li><li>Scan the QR code with Expo Go app</li>',
+                'expo-go-warning': '⚠️ Note: Some features may not work in Expo Go due to custom native modules. Use development builds for full functionality.',
+                'dev-build-title': '🔧 Development Builds (Recommended)',
+                'dev-build-desc': 'For full feature testing, create development builds:',
+                'troubleshooting-title': '🔧 Troubleshooting',
+                'troubleshooting-desc': 'Common issues and solutions:',
+                'issue1-title': '❌ "Node.js is not recognized"',
+                'issue1-desc': 'Problem: Command prompt says Node.js is not found',
+                'issue1-solution': 'Solution:',
+                'issue1-steps': '<li>Download Node.js from <a href="https://nodejs.org/" target="_blank">nodejs.org</a></li><li>Install the LTS version</li><li>Restart your computer completely</li><li>Open a new Command Prompt window</li>',
+                'issue2-title': '❌ "npm install" fails',
+                'issue2-desc': 'Problem: Dependency installation errors',
+                'issue2-solution': 'Solution:',
+                'issue3-title': '❌ Quick-start.bat window disappears',
+                'issue3-desc': 'Problem: The batch file window closes immediately',
+                'issue3-solution': 'Solution:',
+                'issue3-steps': '<li>This is normal! The script opens files automatically</li><li>Check if browser windows opened with setup guides</li><li>If nothing opened, right-click the .bat file → "Run as administrator"</li><li>Or open Command Prompt manually and run the commands</li>',
+                'issue4-title': '❌ "Port 19006 is already in use"',
+                'issue4-desc': 'Problem: Development server can\'t start',
+                'issue4-solution': 'Solution:',
+                'issue5-title': '❌ App shows blank screen',
+                'issue5-desc': 'Problem: Browser shows empty page',
+                'issue5-solution': 'Solution:',
+                'issue5-steps': '<li>Open browser developer tools (F12)</li><li>Check Console tab for error messages</li><li>Try refreshing the page (Ctrl+F5)</li><li>Clear browser cache and cookies</li><li>Try a different browser (Chrome recommended)</li>',
+                'validation-tools-title': '🛠️ Validation Tools',
+                'validation-tools-desc': 'Use these tools to check your setup:',
+                'validation-tools-list': '<li><strong>setup-checker.html:</strong> Browser-based environment checker</li><li><strong>scripts/quickTest.js:</strong> Automated project validation</li><li><strong>npm run test:</strong> Run all tests to verify functionality</li>',
+                'get-help-title': '🆘 Still Need Help?',
+                'get-help-desc': 'If you\'re still having issues:',
+                'get-help-steps': '<li>Check the docs/setup/ folder for more detailed guides</li><li>Open setup-checker.html to validate your environment</li><li>Try the interactive demo in demo/index.html</li><li>Review the error messages carefully - they often contain the solution</li>',
+                'success-title': '🎉 Ready to Explore!',
+                'success-desc': 'Once you have the app running, check out the App Overview Guide to learn about all the features!',
+                'overview-guide-btn': 'View App Overview'
+            },
+            zh: {
+                'lang-btn-text': 'English',
+                'main-title': '🛠️ 設定與測試指南',
+                'main-subtitle': '初學者逐步說明',
+                'tab-quick-start': '快速開始',
+                'tab-detailed-setup': '詳細設定',
+                'tab-web-testing': '網頁測試',
+                'tab-functional-testing': '功能測試',
+                'tab-mobile-testing': '手機測試',
+                'tab-troubleshooting': '疑難排解',
+                'fastest-way-title': '🚀 測試應用程式的最快方法',
+                'fastest-way-desc': '按照這3個簡單步驟在網頁瀏覽器中運行應用程式：',
+                'step1-title': '步驟1：雙擊 quick-start.bat',
+                'step1-desc': '在您的 FinanceFarmSimulator 資料夾中，找到並雙擊 quick-start.bat',
+                'step1-note': '💡 如果視窗快速消失：腳本正在運作！它會自動開啟您的瀏覽器和文字編輯器，顯示有用的檔案。',
+                'step2-title': '步驟2：選擇選項1（網頁瀏覽器）',
+                'step2-desc': '當腳本詢問您的選擇時，輸入 1 並按 Enter 鍵啟動網頁版本。',
+                'step3-title': '步驟3：開啟您的瀏覽器',
+                'step3-desc': '應用程式會自動在您的預設瀏覽器中開啟 http://localhost:19006。',
+                'step3-success': '🎉 成功！您現在應該可以在瀏覽器中看到理財農場模擬器運行！',
+                'no-nodejs-title': '❌ 沒有安裝 Node.js？',
+                'no-nodejs-desc': '如果您看到關於找不到 Node.js 的錯誤：',
+                'no-nodejs-steps': '<li>腳本會自動在瀏覽器中開啟 install-nodejs.html</li><li>按照說明下載並安裝 Node.js</li><li>重新啟動您的電腦</li><li>再次執行 quick-start.bat</li>',
+                'quick-checklist-title': '✅ 快速成功檢查清單',
+                'quick-checklist': '<li>已安裝 Node.js（版本16或更高）</li><li>您在 FinanceFarmSimulator 資料夾中</li><li>您執行了 quick-start.bat 並選擇選項1</li><li>您的瀏覽器開啟了 http://localhost:19006</li><li>您可以看到理財農場模擬器介面</li>',
+                'detailed-title': '📋 詳細設定說明',
+                'detailed-desc': '對於想要了解每個步驟或需要手動安裝的人：',
+                'install-nodejs-title': '1. 安裝 Node.js',
+                'install-nodejs-desc': '需要 Node.js 來運行開發伺服器。',
+                'install-nodejs-steps': '<li>前往 <a href="https://nodejs.org/" target="_blank">https://nodejs.org/</a></li><li>下載 LTS 版本（左側按鈕，推薦）</li><li>執行安裝程式並按照設定精靈</li><li>安裝後重新啟動您的電腦</li>',
+                'navigate-folder-title': '2. 導航到專案資料夾',
+                'navigate-folder-desc': '開啟命令提示字元並導航到您的專案：',
+                'navigate-tip': '💡 提示：您也可以在資料夾中按 Shift+右鍵並選擇「在此處開啟 PowerShell 視窗」',
+                'install-deps-title': '3. 安裝相依性',
+                'install-deps-desc': '安裝所有必需的套件（這可能需要2-5分鐘）：',
+                'legacy-peer-deps-note': '⚠️ 重要：需要 --legacy-peer-deps 標誌來解決 React Native 和 Expo Router 之間的版本衝突。',
+                'start-dev-server-title': '4. 啟動開發伺服器',
+                'start-dev-server-desc': '以網頁模式啟動應用程式：',
+                'server-note': '開發伺服器將啟動並自動在瀏覽器中開啟 http://localhost:19006',
+                'verify-installation-title': '5. 驗證安裝',
+                'verify-installation-desc': '您應該看到：',
+                'verify-list': '<li>理財農場模擬器登入畫面</li><li>瀏覽器控制台中沒有錯誤訊息</li><li>流暢的動畫和互動</li>',
+                'web-testing-title': '🌐 網頁瀏覽器測試',
+                'web-testing-desc': '測試應用程式最簡單的方法是在網頁瀏覽器中：',
+                'start-web-title': '啟動網頁版本',
+                'web-features-title': '您可以在網頁瀏覽器中測試什麼',
+                'web-features-list': '<li><strong>✅ 使用者介面：</strong>所有畫面和組件</li><li><strong>✅ 導航：</strong>在不同畫面之間移動</li><li><strong>✅ 表單：</strong>新增收入、支出和目標</li><li><strong>✅ 動畫：</strong>農場成長和微互動</li><li><strong>✅ 資料儲存：</strong>本地儲存功能</li><li><strong>❌ 相機：</strong>收據掃描無法運作</li><li><strong>❌ 推播通知：</strong>網頁版不可用</li><li><strong>❌ 裝置功能：</strong>觸覺回饋等</li>',
+                'web-testing-steps-title': '測試步驟',
+                'web-testing-steps': '<li><strong>登入/註冊：</strong>建立測試帳戶</li><li><strong>農場視圖：</strong>檢查農場畫布是否載入</li><li><strong>新增收入：</strong>測試收入記錄功能</li><li><strong>新增支出：</strong>測試支出追蹤</li><li><strong>設定目標：</strong>建立儲蓄目標</li><li><strong>查看分析：</strong>檢查報告和圖表</li><li><strong>兒童模式：</strong>切換到兒童友善介面</li>',
+                'web-demo-title': '🎮 互動演示',
+                'web-demo-desc': '您也可以在不安裝任何東西的情況下查看靜態演示：',
+                'mobile-testing-title': '📱 行動裝置測試',
+                'mobile-testing-desc': '在真實裝置或模擬器上測試應用程式：',
+                'android-title': 'Android 測試',
+                'android-desc': '在 Android 裝置或模擬器上測試',
+                'ios-title': 'iOS 測試',
+                'ios-desc': '在 iPhone/iPad 或 iOS 模擬器上測試',
+                'expo-go-title': 'Expo Go 應用程式',
+                'expo-go-desc': '使用 Expo Go 行動應用程式快速測試',
+                'android-setup-title': '🤖 Android 設定',
+                'android-emulator-title': '選項1：Android 模擬器',
+                'android-emulator-steps': '<li>安裝 <a href="https://developer.android.com/studio" target="_blank">Android Studio</a></li><li>開啟 Android Studio → 工具 → AVD 管理器</li><li>建立新的虛擬裝置（推薦 Pixel 4）</li><li>啟動模擬器</li><li>執行：npm run android</li>',
+                'android-device-title': '選項2：真實 Android 裝置',
+                'android-device-steps': '<li>在您的 Android 裝置上啟用開發者選項</li><li>啟用 USB 偵錯</li><li>透過 USB 連接裝置</li><li>執行：adb devices 驗證連接</li><li>執行：npm run android</li>',
+                'ios-setup-title': '🍎 iOS 設定（僅限 Mac）',
+                'ios-simulator-title': '選項1：iOS 模擬器',
+                'ios-simulator-steps': '<li>從 Mac App Store 安裝 Xcode</li><li>開啟 Xcode → 偏好設定 → 組件</li><li>安裝 iOS 模擬器</li><li>執行：npm run ios</li>',
+                'ios-device-title': '選項2：真實 iOS 裝置',
+                'ios-device-steps': '<li>透過 USB 連接 iPhone/iPad</li><li>在您的裝置上信任電腦</li><li>執行：npm run ios</li><li>裝置測試可能需要 Apple 開發者帳戶</li>',
+                'expo-go-setup-title': '📱 Expo Go 測試',
+                'expo-go-desc-detail': 'Expo Go 是一個讓您快速測試 React Native 應用程式的行動應用程式：',
+                'expo-go-steps': '<li>從 App Store（iOS）或 Google Play（Android）安裝 Expo Go</li><li>確保您的手機和電腦在同一個 WiFi 網路上</li><li>執行：npx expo start</li><li>使用 Expo Go 應用程式掃描 QR 碼</li>',
+                'expo-go-warning': '⚠️ 注意：由於自訂原生模組，某些功能可能在 Expo Go 中無法運作。使用開發建置以獲得完整功能。',
+                'dev-build-title': '🔧 開發建置（推薦）',
+                'dev-build-desc': '對於完整功能測試，建立開發建置：',
+                'troubleshooting-title': '🔧 疑難排解',
+                'troubleshooting-desc': '常見問題和解決方案：',
+                'issue1-title': '❌ "無法識別 Node.js"',
+                'issue1-desc': '問題：命令提示字元說找不到 Node.js',
+                'issue1-solution': '解決方案：',
+                'issue1-steps': '<li>從 <a href="https://nodejs.org/" target="_blank">nodejs.org</a> 下載 Node.js</li><li>安裝 LTS 版本</li><li>完全重新啟動您的電腦</li><li>開啟新的命令提示字元視窗</li>',
+                'issue2-title': '❌ "npm install" 失敗',
+                'issue2-desc': '問題：相依性安裝錯誤',
+                'issue2-solution': '解決方案：',
+                'issue3-title': '❌ Quick-start.bat 視窗消失',
+                'issue3-desc': '問題：批次檔視窗立即關閉',
+                'issue3-solution': '解決方案：',
+                'issue3-steps': '<li>這是正常的！腳本會自動開啟檔案</li><li>檢查是否有瀏覽器視窗開啟設定指南</li><li>如果沒有開啟任何東西，右鍵點擊 .bat 檔案 → "以系統管理員身分執行"</li><li>或手動開啟命令提示字元並執行命令</li>',
+                'issue4-title': '❌ "連接埠 19006 已在使用中"',
+                'issue4-desc': '問題：開發伺服器無法啟動',
+                'issue4-solution': '解決方案：',
+                'issue5-title': '❌ 應用程式顯示空白畫面',
+                'issue5-desc': '問題：瀏覽器顯示空白頁面',
+                'issue5-solution': '解決方案：',
+                'issue5-steps': '<li>開啟瀏覽器開發者工具（F12）</li><li>檢查控制台標籤的錯誤訊息</li><li>嘗試重新整理頁面（Ctrl+F5）</li><li>清除瀏覽器快取和 cookies</li><li>嘗試不同的瀏覽器（推薦 Chrome）</li>',
+                'validation-tools-title': '🛠️ 驗證工具',
+                'validation-tools-desc': '使用這些工具檢查您的設定：',
+                'validation-tools-list': '<li><strong>setup-checker.html：</strong>基於瀏覽器的環境檢查器</li><li><strong>scripts/quickTest.js：</strong>自動專案驗證</li><li><strong>npm run test：</strong>執行所有測試以驗證功能</li>',
+                'get-help-title': '🆘 仍需要幫助？',
+                'get-help-desc': '如果您仍有問題：',
+                'get-help-steps': '<li>檢查 docs/setup/ 資料夾以獲得更詳細的指南</li><li>開啟 setup-checker.html 驗證您的環境</li><li>嘗試 demo/index.html 中的互動演示</li><li>仔細檢視錯誤訊息 - 它們通常包含解決方案</li>',
+                'success-title': '🎉 準備探索！',
+                'success-desc': '一旦您讓應用程式運行，請查看應用程式概覽指南以了解所有功能！',
+                'overview-guide-btn': '查看應用程式概覽'
+            }
+        };
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showMobileTab(tabName) {
+            // Hide all mobile sub-tabs
+            document.querySelectorAll('#mobile-testing .tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('#mobile-tab-android, #mobile-tab-ios, #mobile-tab-expo-go').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected mobile sub-tab
+            document.getElementById(tabName).classList.add('active');
+            document.getElementById('mobile-tab-' + tabName).classList.add('active');
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'zh' : 'en';
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            const trans = translations[currentLang];
+            
+            Object.keys(trans).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (key.includes('-list') || key.includes('-steps')) {
+                        element.innerHTML = trans[key];
+                    } else {
+                        element.textContent = trans[key];
+                    }
+                }
+            });
+
+            // Special handling for HTML content
+            const htmlElements = ['step1-note', 'navigate-tip', 'legacy-peer-deps-note', 'expo-go-warning', 'success-desc'];
+            htmlElements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element && trans[id]) {
+                    element.innerHTML = trans[id];
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLanguage();
+        });
+    </script>
+</body>
+</html>

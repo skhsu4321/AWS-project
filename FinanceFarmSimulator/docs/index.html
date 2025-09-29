@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Farm Simulator - Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #2c5530;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .doc-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .doc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: inherit;
+        }
+        .doc-card h3 {
+            color: #4a7c59;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        .doc-card p {
+            margin-bottom: 0;
+            color: #666;
+        }
+        .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .main-guide {
+            background: linear-gradient(135deg, #4a7c59, #5a8a67);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .main-guide h2 {
+            margin: 0 0 15px 0;
+            font-size: 1.8em;
+        }
+        .main-guide a {
+            background: white;
+            color: #4a7c59;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+            transition: transform 0.3s;
+        }
+        .main-guide a:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 Finance Farm Simulator</h1>
+        <p style="text-align: center; font-size: 1.2em; color: #666; margin-bottom: 30px;">
+            Documentation Hub
+        </p>
+
+        <div class="main-guide">
+            <h2>🌱 Finance Farm Simulator Documentation</h2>
+            <p>Choose your guide based on what you want to do:</p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                <a href="APP_OVERVIEW_GUIDE.html" style="background: rgba(255,255,255,0.2); color: white; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold;">📱 Learn About the App</a>
+                <a href="SETUP_TESTING_GUIDE.html" style="background: rgba(255,255,255,0.2); color: white; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold;">🛠️ Setup & Test</a>
+            </div>
+        </div>
+
+        <div class="doc-grid">
+            <a href="APP_OVERVIEW_GUIDE.html" class="doc-card">
+                <span class="icon">📱</span>
+                <h3>App Overview Guide</h3>
+                <p>Learn about the app features, screenshots, and technology (Beginner-friendly with English/中文)</p>
+            </a>
+
+            <a href="SETUP_TESTING_GUIDE.html" class="doc-card">
+                <span class="icon">🛠️</span>
+                <h3>Setup & Testing Guide</h3>
+                <p>Step-by-step setup for beginners, web/mobile testing, troubleshooting (English/中文)</p>
+            </a>
+
+
+
+            <a href="setup/setup-checker.html" class="doc-card">
+                <span class="icon">✅</span>
+                <h3>Setup Checker</h3>
+                <p>Validate your development environment and dependencies</p>
+            </a>
+
+            <a href="implementation/" class="doc-card">
+                <span class="icon">📚</span>
+                <h3>Implementation Docs</h3>
+                <p>Detailed documentation for each feature implementation</p>
+            </a>
+
+            <a href="TESTING_ALTERNATIVES.md" class="doc-card">
+                <span class="icon">🧪</span>
+                <h3>Testing Alternatives</h3>
+                <p>Multiple ways to test the app when Expo Go isn't working</p>
+            </a>
+
+            <a href="LOGIN_DEMO.md" class="doc-card">
+                <span class="icon">🔐</span>
+                <h3>Login Demo</h3>
+                <p>Authentication system demonstration and usage guide</p>
+            </a>
+
+            <a href="FINAL_INTEGRATION_SUMMARY.md" class="doc-card">
+                <span class="icon">🎉</span>
+                <h3>Integration Summary</h3>
+                <p>Final integration status and completed features overview</p>
+            </a>
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 10px; text-align: center;">
+            <h3 style="color: #4a7c59; margin-top: 0;">Need Help?</h3>
+            <p>Start with the <strong>Developer Guide</strong> for comprehensive information, or use the <strong>Quick Start Guide</strong> to get running immediately.</p>
+            <p style="margin-bottom: 0; color: #666; font-size: 0.9em;">
+                All documentation is organized by topic and difficulty level for easy navigation.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
