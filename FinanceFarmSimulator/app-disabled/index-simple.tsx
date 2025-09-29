@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
-export default function HomeScreen() {
-  const router = useRouter();
+export default function SimpleHomeScreen() {
+  const handlePress = (feature: string) => {
+    Alert.alert('Feature', `${feature} - Coming Soon!`);
+  };
 
   return (
     <View style={styles.container}>
@@ -11,32 +12,50 @@ export default function HomeScreen() {
       <Text style={styles.subtitle}>Grow your financial literacy through gamified money management</Text>
       
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => handlePress('Farm View')}
+        >
           <Text style={styles.buttonText}>🚜 View Farm</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => handlePress('Goals Management')}
+        >
           <Text style={styles.buttonText}>🎯 Manage Goals</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => handlePress('Income Tracking')}
+        >
           <Text style={styles.buttonText}>💰 Track Income</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => handlePress('Expense Logging')}
+        >
           <Text style={styles.buttonText}>💸 Log Expenses</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => handlePress('Analytics')}
+        >
           <Text style={styles.buttonText}>📊 View Analytics</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => handlePress('Family Mode')}
+        >
           <Text style={styles.buttonText}>👨‍👩‍👧‍👦 Family Mode</Text>
         </TouchableOpacity>
       </View>
       
-      <Text style={styles.status}>✅ All features implemented and ready!</Text>
+      <Text style={styles.status}>✅ App loaded successfully!</Text>
     </View>
   );
 }

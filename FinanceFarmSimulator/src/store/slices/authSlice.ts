@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { User, LoginCredentials, RegisterCredentials, SocialLoginProvider } from '../../models/User';
-import { authService } from '../../services/AuthService';
+// Lazy import to prevent initialization timeouts
+const getAuthService = async () => {
+  const { authService } = await import('../../services/AuthService');
+  return authService;
+};
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -23,6 +27,7 @@ export const initializeAuth = createAsyncThunk(
   'auth/initialize',
   async (_, { rejectWithValue }) => {
     try {
+      const authService = await getAuthService();
       const user = await authService.getCurrentUser();
       return user;
     } catch (error) {
@@ -35,6 +40,7 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
+      const authService = await getAuthService();
       const user = await authService.login(credentials);
       return user;
     } catch (error) {
@@ -47,6 +53,7 @@ export const registerUser = createAsyncThunk(
   'auth/register',
   async (credentials: RegisterCredentials, { rejectWithValue }) => {
     try {
+      const authService = await getAuthService();
       const user = await authService.register(credentials);
       return user;
     } catch (error) {
@@ -59,6 +66,7 @@ export const socialLogin = createAsyncThunk(
   'auth/socialLogin',
   async (provider: SocialLoginProvider, { rejectWithValue }) => {
     try {
+      const authService = await getAuthService();
       const user = await authService.socialLogin(provider);
       return user;
     } catch (error) {
@@ -71,6 +79,7 @@ export const logoutUser = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
+      const authService = await getAuthService();
       await authService.logout();
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Logout failed');
@@ -82,6 +91,7 @@ export const updateProfile = createAsyncThunk(
   'auth/updateProfile',
   async ({ userId, profile }: { userId: string; profile: any }, { rejectWithValue }) => {
     try {
+      const authService = await getAuthService();
       await authService.updateUserProfile(userId, profile);
       const updatedUser = await authService.getCurrentUser();
       return updatedUser;
@@ -95,6 +105,7 @@ export const changePassword = createAsyncThunk(
   'auth/changePassword',
   async ({ currentPassword, newPassword }: { currentPassword: string; newPassword: string }, { rejectWithValue }) => {
     try {
+      const authService = await getAuthService();
       await authService.changePassword(currentPassword, newPassword);
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Password change failed');
@@ -106,6 +117,7 @@ export const resetPassword = createAsyncThunk(
   'auth/resetPassword',
   async (email: string, { rejectWithValue }) => {
     try {
+      const authService = await getAuthService();
       await authService.resetPassword(email);
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Password reset failed');
@@ -117,6 +129,7 @@ export const verifyEmail = createAsyncThunk(
   'auth/verifyEmail',
   async (_, { rejectWithValue }) => {
     try {
+      const authService = await getAuthService();
       await authService.verifyEmail();
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Email verification failed');

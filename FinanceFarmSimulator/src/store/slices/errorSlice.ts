@@ -1,5 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppError } from '../../services/ErrorHandlingService';
+
+// Simplified type to avoid heavy service imports
+interface AppError {
+  id: string;
+  message: string;
+  code?: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  timestamp: Date;
+  userId?: string;
+  context?: Record<string, any>;
+  stack?: string;
+}
 
 interface ErrorState {
   errors: AppError[];

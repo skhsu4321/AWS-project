@@ -32,9 +32,7 @@ export default {
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
     splash: {
-      image: './assets/splash.png',
-      resizeMode: 'contain',
-      backgroundColor: '#ffffff'
+      backgroundColor: '#667eea'
     },
     assetBundlePatterns: [
       '**/*'
@@ -107,28 +105,12 @@ export default {
       // Minimal plugins for basic functionality
     ],
     extra: {
-      eas: {
-        projectId: process.env.EAS_PROJECT_ID || 'your-project-id-here',
-      },
-      apiUrl: IS_DEV 
-        ? 'http://localhost:3000/api' 
-        : IS_PREVIEW 
-          ? 'https://api-preview.financefarm.app' 
-          : 'https://api.financefarm.app',
-      environment: IS_DEV ? 'development' : IS_PREVIEW ? 'preview' : 'production',
-      enableAnalytics: !IS_DEV,
-      enableCrashReporting: !IS_DEV,
+      apiUrl: 'http://localhost:3000/api',
+      environment: 'development',
+      enableAnalytics: false,
+      enableCrashReporting: false,
     },
-    owner: 'financefarm',
-    runtimeVersion: {
-      policy: 'sdkVersion',
-    },
-    updates: {
-      url: 'https://u.expo.dev/your-project-id-here',
-      enabled: true,
-      checkAutomatically: 'ON_LOAD',
-      fallbackToCacheTimeout: 10000,
-    },
+
     scheme: 'financefarm',
     experiments: {
       typedRoutes: true,

@@ -1,6 +1,38 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { OfflineStatus, SyncStatus, PendingOperation } from '../../services/OfflineService';
-import { ConflictData } from '../../services/ConflictResolutionService';
+
+// Simplified types to avoid heavy service imports
+interface OfflineStatus {
+  isOnline: boolean;
+  isConnected: boolean;
+  type: string | null;
+  details: any;
+}
+
+interface SyncStatus {
+  isActive: boolean;
+  pendingOperations: number;
+  lastSyncTime: Date | null;
+  syncErrors: string[];
+}
+
+interface PendingOperation {
+  id: string;
+  type: 'CREATE' | 'UPDATE' | 'DELETE';
+  table: string;
+  data: any;
+  timestamp: number;
+  userId: string;
+  retryCount: number;
+  maxRetries: number;
+}
+
+interface ConflictData {
+  id: string;
+  table: string;
+  localData: any;
+  serverData: any;
+  timestamp: number;
+}
 
 export interface SyncState {
   // Offline status

@@ -13,25 +13,67 @@ const firebaseConfig = {
   appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID || "1:123456789:web:abcdef123456789",
 };
 
-// Initialize Firebase
-let app: FirebaseApp;
-let auth: Auth;
-let firestore: Firestore;
+// Lazy initialization to prevent startup timeouts
+let app: FirebaseApp | null = null;
+let auth: Auth | null = null;
+let firestore: Firestore | null = null;
 
-if (getApps().length === 0) {
-  app = initializeApp(firebaseConfig);
+function initializeFirebase() {
+  if (app) return { app, auth: auth!, firestore: firestore! };
   
-  // Initialize Auth with AsyncStorage persistence
-  auth = initializeAuth(app, {
-    persistence: getReactNativePersistence(AsyncStorage)
-  });
-  
-  firestore = getFirestore(app);
-} else {
-  app = getApps()[0];
-  auth = getAuth(app);
-  firestore = getFirestore(app);
+  try {
+    if (getApps().length === 0) {
+      app = initializeApp(firebaseConfig);
+      
+      // Initialize Auth with AsyncStorage persistence
+      auth = initializeAuth(app, {
+        persistence: getReactNativePersistence(AsyncStorage)
+      });
+      
+      firestore = getFirestore(app);
+    } else {
+      app = getApps()[0];
+      auth = getAuth(app);
+      firestore = getFirestore(app);
+    }
+    
+    return { app, auth, firestore };
+  } catch (error) {
+    console.warn('Firebase initialization failed:', error);
+    // Return mock objects for development
+    return {
+      app: {} as FirebaseApp,
+      auth: {} as Auth,
+      firestore: {} as Firestore
+    };
+  }
 }
 
-export { app, auth, firestore };
-export default app;
+// Getter functions that initialize on first access
+export function getFirebaseApp(): FirebaseApp {
+  if (!app) {
+    const { app: initializedApp } = initializeFirebase();
+    return initializedApp;
+  }
+  return app;
+}
+
+export function getFirebaseAuth(): Auth {
+  if (!auth) {
+    const { auth: initializedAuth } = initializeFirebase();
+    return initializedAuth;
+  }
+  return auth;
+}
+
+export function getFirebaseFirestore(): Firestore {
+  if (!firestore) {
+    const { firestore: initializedFirestore } = initializeFirebase();
+    return initializedFirestore;
+  }
+  return firestore;
+}
+
+// Legacy exports for backward compatibility
+export { getFirebaseApp as app, getFirebaseAuth as auth, getFirebaseFirestore as firestore };
+export default getFirebaseApp;

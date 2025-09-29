@@ -6,6 +6,21 @@ import {uiSlice} from './slices/uiSlice';
 import {syncSlice} from './slices/syncSlice';
 import errorReducer from './slices/errorSlice';
 
+// Simple network slice to prevent errors
+const networkSlice = {
+  name: 'network',
+  reducer: (state = { isOnline: true }, action: any) => {
+    switch (action.type) {
+      case 'network/setOffline':
+        return { ...state, isOnline: false };
+      case 'network/setOnline':
+        return { ...state, isOnline: true };
+      default:
+        return state;
+    }
+  }
+};
+
 export const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
@@ -14,6 +29,7 @@ export const store = configureStore({
     ui: uiSlice.reducer,
     sync: syncSlice.reducer,
     error: errorReducer,
+    network: networkSlice.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

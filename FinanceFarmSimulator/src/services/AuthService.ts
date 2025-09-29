@@ -15,7 +15,7 @@ import {
   AuthError,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, firestore } from '../config/firebase';
+import { getFirebaseAuth, getFirebaseFirestore } from '../config/firebase';
 import {
   User,
   UserProfile,
@@ -73,7 +73,7 @@ class AuthService implements AuthServiceInterface {
 
       // Create Firebase user
       const userCredential = await createUserWithEmailAndPassword(
-        auth,
+        getFirebaseAuth(),
         validatedCredentials.email,
         validatedCredentials.password
       );
@@ -96,7 +96,7 @@ class AuthService implements AuthServiceInterface {
         isActive: true,
       };
 
-      await setDoc(doc(firestore, 'users', firebaseUser.uid), {
+      await setDoc(doc(getFirebaseFirestore(), 'users', firebaseUser.uid), {
         ...user,
         createdAt: serverTimestamp(),
         lastLoginAt: serverTimestamp(),
@@ -125,7 +125,7 @@ class AuthService implements AuthServiceInterface {
 
       // Sign in with Firebase
       const userCredential = await signInWithEmailAndPassword(
-        auth,
+        getFirebaseAuth(),
         validatedCredentials.email,
         validatedCredentials.password
       );
@@ -133,7 +133,7 @@ class AuthService implements AuthServiceInterface {
       const firebaseUser = userCredential.user;
 
       // Get user document from Firestore
-      const userDoc = await getDoc(doc(firestore, 'users', firebaseUser.uid));
+      const userDoc = await getDoc(doc(getFirebaseFirestore(), 'users', firebaseUser.uid));
       
       if (!userDoc.exists()) {
         throw new Error('User profile not found');
@@ -151,7 +151,7 @@ class AuthService implements AuthServiceInterface {
       };
 
       // Update last login time
-      await updateDoc(doc(firestore, 'users', firebaseUser.uid), {
+      await updateDoc(doc(getFirebaseFirestore(), 'users', firebaseUser.uid), {
         lastLoginAt: serverTimestamp(),
       });
 
@@ -187,7 +187,7 @@ class AuthService implements AuthServiceInterface {
    */
   async logout(): Promise<void> {
     try {
-      await signOut(auth);
+      await signOut(getFirebaseAuth());
       await this.clearSession();
       this.currentUser = null;
     } catch (error) {
@@ -200,7 +200,7 @@ class AuthService implements AuthServiceInterface {
    */
   async getCurrentUser(): Promise<User | null> {
     try {
-      const firebaseUser = auth.currentUser;
+      const firebaseUser = getFirebaseAuth().currentUser;
       
       if (!firebaseUser) {
         // Try to restore from stored session
@@ -216,7 +216,7 @@ class AuthService implements AuthServiceInterface {
       }
 
       // Fetch user data from Firestore
-      const userDoc = await getDoc(doc(firestore, 'users', firebaseUser.uid));
+      const userDoc = await getDoc(doc(getFirebaseFirestore(), 'users', firebaseUser.uid));
       
       if (!userDoc.exists()) {
         return null;
@@ -249,7 +249,7 @@ class AuthService implements AuthServiceInterface {
       const validatedProfile = validateUserProfile({ ...this.currentUser?.profile, ...profile });
       
       // Update Firestore document
-      await updateDoc(doc(firestore, 'users', userId), {
+      await updateDoc(doc(getFirebaseFirestore(), 'users', userId), {
         profile: validatedProfile,
       });
 
@@ -267,7 +267,7 @@ class AuthService implements AuthServiceInterface {
    */
   async changePassword(currentPassword: string, newPassword: string): Promise<void> {
     try {
-      const firebaseUser = auth.currentUser;
+      const firebaseUser = getFirebaseAuth().currentUser;
       if (!firebaseUser || !firebaseUser.email) {
         throw new Error('No authenticated user found');
       }
@@ -288,7 +288,7 @@ class AuthService implements AuthServiceInterface {
    */
   async resetPassword(email: string): Promise<void> {
     try {
-      await sendPasswordResetEmail(auth, email);
+      await sendPasswordResetEmail(getFirebaseAuth(), email);
     } catch (error) {
       throw this.handleAuthError(error);
     }
@@ -299,7 +299,7 @@ class AuthService implements AuthServiceInterface {
    */
   async verifyEmail(): Promise<void> {
     try {
-      const firebaseUser = auth.currentUser;
+      const firebaseUser = getFirebaseAuth().currentUser;
       if (!firebaseUser) {
         throw new Error('No authenticated user found');
       }
@@ -316,7 +316,7 @@ class AuthService implements AuthServiceInterface {
   async linkChildAccount(parentId: string, childId: string): Promise<void> {
     try {
       // Update child's profile with parent ID
-      await updateDoc(doc(firestore, 'users', childId), {
+      await updateDoc(doc(getFirebaseFirestore(), 'users', childId), {
         'profile.parentAccountId': parentId,
       });
 
@@ -333,7 +333,7 @@ class AuthService implements AuthServiceInterface {
    * Listen to authentication state changes
    */
   onAuthStateChange(callback: (user: User | null) => void): () => void {
-    return onAuthStateChanged(auth, async (firebaseUser) => {
+    return onAuthStateChanged(getFirebaseAuth(), async (firebaseUser) => {
       if (firebaseUser) {
         const user = await this.getCurrentUser();
         callback(user);
