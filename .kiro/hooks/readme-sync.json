@@ -1,0 +1,18 @@
+{
+  "name": "README Sync",
+  "description": "Automatically sync changes between root README.md and FinanceFarmSimulator/README.md",
+  "trigger": {
+    "type": "file_save",
+    "patterns": ["README.md", "FinanceFarmSimulator/README.md"]
+  },
+  "actions": [
+    {
+      "type": "agent_execution",
+      "prompt": "A README file was just saved. Please sync the content between README.md and FinanceFarmSimulator/README.md so they have identical content. Copy the content from the file that was just saved to the other README file.",
+      "context": {
+        "include_changed_files": true
+      }
+    }
+  ],
+  "enabled": true
+}
