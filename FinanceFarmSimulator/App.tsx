@@ -331,6 +331,43 @@ export default function App() {
     </ScrollView>
   );
 
+  const ExpensesScreen = () => (
+    <ScrollView style={styles.screenContainer}>
+      <View style={styles.contentContainer}>
+        <Text style={styles.screenTitle}>💸 Expenses</Text>
+        
+        <TouchableOpacity 
+          style={styles.addButton}
+          onPress={() => {
+            setModalType('expense');
+            setShowModal(true);
+          }}
+        >
+          <Text style={styles.addButtonText}>+ Add Expense</Text>
+        </TouchableOpacity>
+        
+        {expenses.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyIcon}>💸</Text>
+            <Text style={styles.emptyText}>No expenses recorded yet</Text>
+            <Text style={styles.emptySubtext}>Tap "Add Expense" to track your spending!</Text>
+          </View>
+        ) : (
+          expenses.map((item) => (
+            <View key={item.id} style={styles.itemCard}>
+              <View style={styles.itemHeader}>
+                <Text style={[styles.itemAmount, styles.expenseAmount]}>-${item.amount.toFixed(2)}</Text>
+                <Text style={styles.itemDate}>{item.date}</Text>
+              </View>
+              <Text style={styles.itemDescription}>{item.description}</Text>
+              <Text style={styles.itemCategory}>Category: {item.category}</Text>
+            </View>
+          ))
+        )}
+      </View>
+    </ScrollView>
+  );
+
   // Modal Component
   const renderModal = () => {
     if (modalType === 'income') {
@@ -394,6 +431,67 @@ export default function App() {
           </View>
         </Modal>
       );
+    } else if (modalType === 'expense') {
+      return (
+        <Modal visible={showModal} animationType="slide" transparent>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Add Expense</Text>
+              
+              <TextInput
+                style={styles.input}
+                placeholder="Amount ($)"
+                value={expenseForm.amount}
+                onChangeText={(text) => setExpenseForm({...expenseForm, amount: text})}
+                keyboardType="numeric"
+              />
+              
+              <View style={styles.pickerContainer}>
+                <Text style={styles.pickerLabel}>Category:</Text>
+                {['food', 'entertainment', 'transport', 'shopping', 'other'].map((category) => (
+                  <TouchableOpacity
+                    key={category}
+                    style={[
+                      styles.pickerOption,
+                      expenseForm.category === category && styles.pickerOptionSelected
+                    ]}
+                    onPress={() => setExpenseForm({...expenseForm, category})}
+                  >
+                    <Text style={[
+                      styles.pickerOptionText,
+                      expenseForm.category === category && styles.pickerOptionTextSelected
+                    ]}>
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              
+              <TextInput
+                style={styles.input}
+                placeholder="Description"
+                value={expenseForm.description}
+                onChangeText={(text) => setExpenseForm({...expenseForm, description: text})}
+              />
+              
+              <View style={styles.modalButtons}>
+                <TouchableOpacity 
+                  style={styles.modalCancelButton}
+                  onPress={() => setShowModal(false)}
+                >
+                  <Text style={styles.modalCancelText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.modalSaveButton}
+                  onPress={addExpense}
+                >
+                  <Text style={styles.modalSaveText}>Add Expense</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      );
     }
     return null;
   };
@@ -413,7 +511,7 @@ export default function App() {
   const screens = {
     Farm: FarmScreen,
     Income: IncomeScreen,
-    Expenses: () => <Text>Expenses Screen (Coming Soon)</Text>,
+    Expenses: ExpensesScreen,
     Goals: () => <Text>Goals Screen (Coming Soon)</Text>,
     Analytics: () => <Text>Analytics Screen (Coming Soon)</Text>,
     Settings: () => (
@@ -743,6 +841,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#28a745',
   },
+  expenseAmount: {
+    color: '#dc3545',
+  },
   itemDate: {
     fontSize: 12,
     color: '#666',
@@ -753,6 +854,11 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   itemSource: {
+    fontSize: 12,
+    color: '#666',
+    fontStyle: 'italic',
+  },
+  itemCategory: {
     fontSize: 12,
     color: '#666',
     fontStyle: 'italic',
