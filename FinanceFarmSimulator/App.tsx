@@ -368,6 +368,98 @@ export default function App() {
     </ScrollView>
   );
 
+  const GoalsScreen = () => (
+    <ScrollView style={styles.screenContainer}>
+      <View style={styles.contentContainer}>
+        <Text style={styles.screenTitle}>🎯 Savings Goals</Text>
+        
+        <TouchableOpacity 
+          style={styles.addButton}
+          onPress={() => {
+            setModalType('goal');
+            setShowModal(true);
+          }}
+        >
+          <Text style={styles.addButtonText}>+ Add Goal</Text>
+        </TouchableOpacity>
+        
+        {goals.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyIcon}>🌱</Text>
+            <Text style={styles.emptyText}>No savings goals yet</Text>
+            <Text style={styles.emptySubtext}>Plant your first seed by creating a savings goal!</Text>
+          </View>
+        ) : (
+          goals.map((item) => {
+            const progress = item.targetAmount > 0 ? (item.currentAmount / item.targetAmount) * 100 : 0;
+            const isCompleted = progress >= 100;
+            
+            return (
+              <View key={item.id} style={styles.itemCard}>
+                <View style={styles.itemHeader}>
+                  <Text style={styles.goalTitle}>{item.title}</Text>
+                  <Text style={styles.itemDate}>{item.date}</Text>
+                </View>
+                <Text style={styles.itemDescription}>{item.description}</Text>
+                <View style={styles.goalProgress}>
+                  <Text style={styles.goalAmount}>
+                    ${item.currentAmount.toFixed(2)} / ${item.targetAmount.toFixed(2)}
+                  </Text>
+                  <Text style={[styles.goalPercentage, isCompleted && styles.goalCompleted]}>
+                    {progress.toFixed(1)}% {isCompleted ? '🎉' : '🌱'}
+                  </Text>
+                </View>
+                <View style={styles.progressBar}>
+                  <View 
+                    style={[
+                      styles.progressFill, 
+                      { width: `${Math.min(progress, 100)}%` },
+                      isCompleted && styles.progressCompleted
+                    ]} 
+                  />
+                </View>
+                {!isCompleted && (
+                  <TouchableOpacity 
+                    style={styles.addProgressButton}
+                    onPress={() => {
+                      Alert.prompt(
+                        'Add Progress',
+                        'How much would you like to add to this goal?',
+                        [
+                          { text: 'Cancel', style: 'cancel' },
+                          {
+                            text: 'Add',
+                            onPress: (amount) => {
+                              const numAmount = parseFloat(amount);
+                              if (numAmount && numAmount > 0) {
+                                const updatedGoals = goals.map(goal => 
+                                  goal.id === item.id 
+                                    ? { ...goal, currentAmount: goal.currentAmount + numAmount }
+                                    : goal
+                                );
+                                setGoals(updatedGoals);
+                                Alert.alert('Success!', `Added $${numAmount.toFixed(2)} to your goal! 🌱`);
+                              }
+                            }
+                          }
+                        ],
+                        'plain-text',
+                        '',
+                        'numeric'
+                      );
+                    }}
+                  >
+                    <Text style={styles.addProgressText}>+ Add Progress</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            );
+          })
+        )}
+      </View>
+    </ScrollView>
+  );
+
   // Modal Component
   const renderModal = () => {
     if (modalType === 'income') {
@@ -492,6 +584,54 @@ export default function App() {
           </View>
         </Modal>
       );
+    } else if (modalType === 'goal') {
+      return (
+        <Modal visible={showModal} animationType="slide" transparent>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Create Savings Goal</Text>
+              
+              <TextInput
+                style={styles.input}
+                placeholder="Goal Title (e.g., New Bike)"
+                value={goalForm.title}
+                onChangeText={(text) => setGoalForm({...goalForm, title: text})}
+              />
+              
+              <TextInput
+                style={styles.input}
+                placeholder="Target Amount ($)"
+                value={goalForm.targetAmount}
+                onChangeText={(text) => setGoalForm({...goalForm, targetAmount: text})}
+                keyboardType="numeric"
+              />
+              
+              <TextInput
+                style={styles.input}
+                placeholder="Description (optional)"
+                value={goalForm.description}
+                onChangeText={(text) => setGoalForm({...goalForm, description: text})}
+                multiline
+              />
+              
+              <View style={styles.modalButtons}>
+                <TouchableOpacity 
+                  style={styles.modalCancelButton}
+                  onPress={() => setShowModal(false)}
+                >
+                  <Text style={styles.modalCancelText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.modalSaveButton}
+                  onPress={addGoal}
+                >
+                  <Text style={styles.modalSaveText}>Plant Seed 🌱</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      );
     }
     return null;
   };
@@ -512,7 +652,7 @@ export default function App() {
     Farm: FarmScreen,
     Income: IncomeScreen,
     Expenses: ExpensesScreen,
-    Goals: () => <Text>Goals Screen (Coming Soon)</Text>,
+    Goals: GoalsScreen,
     Analytics: () => {
       const totalIncome = income.reduce((sum, item) => sum + item.amount, 0);
       const totalExpenses = expenses.reduce((sum, item) => sum + item.amount, 0);
@@ -1330,5 +1470,59 @@ const styles = StyleSheet.create({
     color: '#666',
     marginBottom: 8,
     paddingLeft: 10,
+  },
+  
+  // Goal-specific styles
+  goalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    flex: 1,
+  },
+  goalProgress: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  goalAmount: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '600',
+  },
+  goalPercentage: {
+    fontSize: 14,
+    color: '#667eea',
+    fontWeight: 'bold',
+  },
+  goalCompleted: {
+    color: '#28a745',
+  },
+  progressBar: {
+    height: 8,
+    backgroundColor: '#e9ecef',
+    borderRadius: 4,
+    marginVertical: 8,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: '#667eea',
+    borderRadius: 4,
+  },
+  progressCompleted: {
+    backgroundColor: '#28a745',
+  },
+  addProgressButton: {
+    backgroundColor: '#28a745',
+    padding: 10,
+    borderRadius: 6,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  addProgressText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });
