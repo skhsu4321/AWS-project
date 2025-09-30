@@ -14,7 +14,7 @@ A gamified financial management mobile app that transforms financial tasks into 
 ### Quick Links
 - 🚀 [Quick Start Guide](docs/setup/QUICK_START_GUIDE.md)
 - 🔧 [Manual Setup](docs/setup/MANUAL_SETUP.md)
-- 🧪 [Testing Alternatives](docs/TESTING_ALTERNATIVES.md)
+- 🧪 [Testing Alternatives](docs/testing/TESTING_ALTERNATIVES.md)
 - 📊 [Implementation Docs](docs/implementation/)
 
 ## 📁 Project Structure
@@ -25,23 +25,50 @@ FinanceFarmSimulator/
 │   ├── 📁 components/               # React components by feature
 │   │   ├── 📁 accessibility/        # Accessibility components
 │   │   ├── 📁 analytics/           # Analytics components
+│   │   ├── 📁 auth/                # Authentication components
 │   │   ├── 📁 child/               # Child mode components
 │   │   ├── 📁 common/              # Reusable components
 │   │   ├── 📁 expenses/            # Expense tracking
 │   │   ├── 📁 farm/                # Farm visualization
+│   │   ├── 📁 financial/           # Financial components
 │   │   ├── 📁 goals/               # Goal management
 │   │   ├── 📁 income/              # Income logging
-│   │   └── 📁 integration/         # App integration
+│   │   ├── 📁 integration/         # App integration
+│   │   └── 📁 performance/         # Performance components
 │   ├── 📁 screens/                 # Screen components
-│   ├── 📁 services/                # Business logic
+│   │   ├── 📁 analytics/           # Analytics screens
+│   │   ├── 📁 auth/                # Authentication screens
+│   │   ├── 📁 child/               # Child mode screens
+│   │   ├── 📁 expenses/            # Expense screens
+│   │   ├── 📁 goals/               # Goal screens
+│   │   ├── 📁 income/              # Income screens
+│   │   └── 📁 settings/            # Settings screens
+│   ├── 📁 services/                # Business logic & APIs
+│   │   └── 📁 dao/                 # Data Access Objects
 │   ├── 📁 store/                   # Redux store
-│   ├── 📁 hooks/                   # Custom hooks
-│   └── 📁 __tests__/               # Test files
+│   │   ├── 📁 selectors/           # Redux selectors
+│   │   └── 📁 slices/              # Redux slices
+│   ├── 📁 navigation/              # Navigation configuration
+│   ├── 📁 hooks/                   # Custom React hooks
+│   ├── 📁 models/                  # TypeScript interfaces/types
+│   ├── 📁 utils/                   # Utility functions
+│   ├── 📁 theme/                   # Theme configuration
+│   ├── 📁 contexts/                # React contexts
+│   ├── 📁 config/                  # App configuration
+│   ├── 📁 __tests__/               # Test files
+│   │   ├── 📁 e2e/                 # End-to-end tests
+│   │   ├── 📁 integration/         # Integration tests
+│   │   ├── 📁 performance/         # Performance tests
+│   │   └── 📁 security/            # Security tests
+│   └── 📁 __mocks__/               # Test mocks
 ├── 📁 docs/                        # Documentation
-│   ├── 📁 implementation/          # Feature docs
-│   └── 📁 setup/                   # Setup guides
-├── 📁 scripts/                     # Build scripts
-└── 📁 demo/                        # Demo files
+│   ├── 📁 implementation/          # Feature documentation
+│   ├── 📁 setup/                   # Setup guides
+│   ├── 📁 summaries/               # Project summaries
+│   └── 📁 testing/                 # Testing documentation
+├── 📁 scripts/                     # Build and deployment scripts
+├── 📁 demo/                        # Demo files
+└── 📁 assets/                      # Static assets
 ```
 
 ## Development Setup
@@ -87,29 +114,85 @@ FinanceFarmSimulator/
 
 ### Available Scripts
 
+#### Development
 - `npm start` - Start the Expo development server
 - `npm run android` - Run on Android device/emulator
 - `npm run ios` - Run on iOS device/simulator
 - `npm run web` - Run in web browser
-- `npm test` - Run tests
+
+#### Testing
+- `npm test` - Run all tests
 - `npm run test:watch` - Run tests in watch mode
 - `npm run test:coverage` - Run tests with coverage report
+- `npm run test:unit` - Run unit tests only
+- `npm run test:integration` - Run integration tests
+- `npm run test:e2e` - Run end-to-end tests
+- `npm run test:performance` - Run performance tests
+- `npm run test:security` - Run security tests
+- `npm run test:accessibility` - Run accessibility tests
+- `npm run test:all` - Run all test suites
+- `npm run test:ci` - Run tests for CI environment
+- `npm run test:final` - Run final testing script
+
+#### Code Quality
 - `npm run lint` - Run ESLint
 - `npm run lint:fix` - Run ESLint with auto-fix
 - `npm run format` - Format code with Prettier
 - `npm run format:check` - Check code formatting
 
+#### Build & Deployment
+- `npm run build` - Build the app
+- `npm run build:dev` - Build for development
+- `npm run build:preview` - Build for preview
+- `npm run build:production` - Build for production
+- `npm run deploy:dev` - Deploy to development
+- `npm run deploy:preview` - Deploy to preview
+- `npm run deploy:production` - Deploy to production
+- `npm run update:preview` - OTA update for preview
+- `npm run update:production` - OTA update for production
+
+#### Readiness Checks
+- `npm run readiness:check` - Check deployment readiness
+- `npm run readiness:quick` - Quick readiness check
+
 ## Technology Stack
 
-- **Framework**: React Native with Expo
-- **Language**: TypeScript
-- **State Management**: Redux Toolkit
-- **Navigation**: React Navigation
+### Core Framework
+- **Framework**: React Native with Expo (~54.0.10)
+- **Language**: TypeScript (~5.9.2)
+- **React**: 19.1.0
+- **React Native**: 0.81.4
+
+### State Management & Navigation
+- **State Management**: Redux Toolkit with React Redux
+- **Navigation**: React Navigation (Stack & Bottom Tabs)
+- **Routing**: Expo Router
+
+### Database & Storage
 - **Database**: SQLite (expo-sqlite)
-- **Animation**: React Native Reanimated
-- **Testing**: Jest with ts-jest
-- **Linting**: ESLint
+- **Storage**: AsyncStorage
+- **Cloud**: Firebase
+
+### UI & Animation
+- **Animation**: React Native Reanimated & Worklets
+- **Graphics**: React Native Skia, React Native SVG
+- **Charts**: React Native Chart Kit
+- **Gestures**: React Native Gesture Handler
+
+### Development Tools
+- **Testing**: Jest with ts-jest, React Native Testing Library
+- **Linting**: ESLint with TypeScript support
 - **Formatting**: Prettier
+- **Build**: EAS Build
+- **Type Checking**: TypeScript with strict mode
+
+### Additional Features
+- **Camera**: Expo Camera & Vision Camera
+- **Voice**: React Native Voice
+- **Accessibility**: Built-in React Native accessibility
+- **Offline Support**: NetInfo for connectivity detection
+- **Security**: Expo Crypto for encryption
+- **Validation**: Zod for schema validation
 
 ## Features
 
