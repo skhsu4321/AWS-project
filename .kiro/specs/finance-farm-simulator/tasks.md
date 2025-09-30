@@ -139,7 +139,7 @@
   - Write integration tests for goal management workflows
   - _Requirements: 2.1, 2.2, 2.4, 2.5_
 
-- [ ] 11. Develop expense tracking interface
+- [x] 11. Develop expense tracking interface
 
 
 
