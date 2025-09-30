@@ -18,6 +18,13 @@ export enum GoalStatus {
   CANCELLED = 'cancelled',
 }
 
+export enum TimePeriod {
+  DAILY = 'daily',
+  WEEKLY = 'weekly',
+  MONTHLY = 'monthly',
+  YEARLY = 'yearly',
+}
+
 export enum ExpenseCategory {
   FOOD = 'food',
   TRANSPORT = 'transport',

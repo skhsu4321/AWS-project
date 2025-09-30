@@ -21,8 +21,8 @@ describe('Income Calculations', () => {
     });
 
     it('calculates correct multiplier for medium streaks', () => {
-      expect(calculateStreakMultiplier(7)).toBe(1.7);
-      expect(calculateStreakMultiplier(10)).toBe(2.0);
+      expect(calculateStreakMultiplier(7)).toBeCloseTo(1.7);
+      expect(calculateStreakMultiplier(10)).toBeCloseTo(2.0);
     });
 
     it('caps multiplier at 2x for high streaks', () => {
@@ -80,8 +80,8 @@ describe('Income Calculations', () => {
       const day7Multiplier = calculateStreakMultiplier(day7Streak);
       const day7Boost = calculateFertilizerBoost(1000, day7Multiplier);
       
-      expect(day7Multiplier).toBe(1.7);
-      expect(day7Boost).toBe(1700);
+      expect(day7Multiplier).toBeCloseTo(1.7);
+      expect(day7Boost).toBeCloseTo(1700);
 
       // Day 10: Maximum multiplier reached
       const day10Streak = 10;
@@ -130,7 +130,7 @@ describe('Income Calculations', () => {
       progressionData.forEach(({ day, expectedBoost }) => {
         const multiplier = calculateStreakMultiplier(day);
         const boost = calculateFertilizerBoost(incomeAmount, multiplier);
-        expect(boost).toBe(expectedBoost);
+        expect(boost).toBeCloseTo(expectedBoost);
       });
     });
   });

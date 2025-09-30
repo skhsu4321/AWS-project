@@ -49,6 +49,22 @@ export class DAOFactory {
     return {};
   }
 
+  static getUserDAO(): any {
+    return {};
+  }
+
+  static getIncomeDAO(): any {
+    return {};
+  }
+
+  static getExpenseDAO(): any {
+    return {};
+  }
+
+  static getSavingsGoalDAO(): any {
+    return {};
+  }
+
   // Reset method for testing
   static reset(): void {
     this.farmDAO = null;

@@ -60,7 +60,8 @@ export class FarmEngine implements FarmEngineInterface {
     const now = new Date();
     const farm: Farm = {
       id: uuidv4(),
-      ...farmInput,
+      userId: farmInput.userId,
+      layout: farmInput.layout,
       crops: [],
       decorations: [],
       healthScore: 100,

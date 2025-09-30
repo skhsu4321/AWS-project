@@ -113,3 +113,31 @@ export const calculateIncomeBoost = (
   if (averageIncome === 0) return 1;
   return Math.max(1, incomeAmount / averageIncome);
 };
+
+export const calculateWeedPenalty = (
+  expenseAmount: number,
+  budgetLimit: number,
+): number => {
+  // Returns a penalty factor between 0 and 1
+  if (budgetLimit === 0) return 0.5;
+  return Math.min(1, expenseAmount / budgetLimit);
+};
+
+export const calculateBudgetThreshold = (
+  currentSpending: number,
+  budgetLimit: number,
+  warningThreshold: number = 0.8,
+): boolean => {
+  if (budgetLimit === 0) return false;
+  return (currentSpending / budgetLimit) >= warningThreshold;
+};
+
+export const calculateRewardValue = (
+  goalAmount: number,
+  completionTime: number,
+  streakMultiplier: number = 1,
+): number => {
+  const baseReward = Math.min(goalAmount * 0.1, 100); // 10% of goal, capped at 100
+  const timeBonus = Math.max(0, (30 - completionTime) * 2); // Bonus for completing early
+  return Math.floor((baseReward + timeBonus) * streakMultiplier);
+};

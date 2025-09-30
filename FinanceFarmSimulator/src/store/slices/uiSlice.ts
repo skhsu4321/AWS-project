@@ -4,14 +4,18 @@ interface UIState {
   theme: 'light' | 'dark';
   mode: 'adult' | 'child';
   loading: boolean;
+  isLoading: boolean;
   notifications: any[];
+  activeModals: string[];
 }
 
 const initialState: UIState = {
   theme: 'light',
   mode: 'adult',
   loading: false,
+  isLoading: false,
   notifications: [],
+  activeModals: [],
 };
 
 export const uiSlice = createSlice({

@@ -63,23 +63,19 @@ module.exports = {
     {
       displayName: 'integration',
       testMatch: ['<rootDir>/src/__tests__/integration/**/*.test.{ts,tsx}'],
-      testTimeout: 30000,
     },
     {
       displayName: 'e2e',
       testMatch: ['<rootDir>/src/__tests__/e2e/**/*.test.{ts,tsx}'],
-      testTimeout: 60000,
       maxWorkers: 1, // Run E2E tests sequentially
     },
     {
       displayName: 'performance',
       testMatch: ['<rootDir>/src/__tests__/performance/**/*.test.{ts,tsx}'],
-      testTimeout: 30000,
     },
     {
       displayName: 'security',
       testMatch: ['<rootDir>/src/__tests__/security/**/*.test.{ts,tsx}'],
-      testTimeout: 20000,
     },
   ],
   

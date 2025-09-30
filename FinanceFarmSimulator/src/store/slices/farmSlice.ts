@@ -3,12 +3,14 @@ import { Farm, Crop } from '../../models/Game';
 
 interface FarmState {
   farm: Farm | null;
+  currentFarm: Farm | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: FarmState = {
   farm: null,
+  currentFarm: null,
   loading: false,
   error: null,
 };
@@ -25,11 +27,13 @@ export const farmSlice = createSlice({
     },
     setFarm: (state, action: PayloadAction<Farm | null>) => {
       state.farm = action.payload;
+      state.currentFarm = action.payload;
       state.loading = false;
       state.error = null;
     },
     updateFarm: (state, action: PayloadAction<Farm>) => {
       state.farm = action.payload;
+      state.currentFarm = action.payload;
       state.error = null;
     },
     updateFarmHealth: (state, action: PayloadAction<number>) => {
@@ -64,3 +68,7 @@ export const {
   updateCrop,
   removeCrop
 } = farmSlice.actions;
+
+// Alias for backward compatibility
+export const updateFarmState = updateFarm;
+export const updateCropGrowth = updateCrop;
