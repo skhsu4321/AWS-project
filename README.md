@@ -1,4 +1,4 @@
-# 🌱 Finance Farm Simulator
+# 🌱 FieldFinance
 
 A gamified financial management mobile app that transforms financial tasks into an engaging farm simulation experience.
 
@@ -64,7 +64,7 @@ For detailed project structure, see the [main project README](FinanceFarmSimulat
 
 ## Project Information
 
-This repository contains the Finance Farm Simulator mobile application. All development work, documentation, and resources are located in the `FinanceFarmSimulator/` directory.
+This repository contains the FieldFinance mobile application. All development work, documentation, and resources are located in the `FinanceFarmSimulator/` directory.
 
 For complete information about:
 - Development setup and prerequisites

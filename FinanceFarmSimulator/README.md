@@ -1,4 +1,4 @@
-# 🌱 Finance Farm Simulator
+# 🌱 FieldFinance
 
 A gamified financial management mobile app that transforms financial tasks into an engaging farm simulation experience.
 
